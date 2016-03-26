@@ -1,6 +1,152 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 {% block body %}
-<div>
+{#	<div class="row">#}
+{#		<div class="col-md-">#}
+			<div class="chat-wrapper">
+				<div class="title">
+					<button class="btn btn-back">
+						<i class="fa fa-angle-left"></i>
+						한의주 ♡ 형정석
+					</button>
+					<button class="btn btn-menu pull-right">
+						<i class="fa fa-bars"></i>
+					</button>
+				</div>
+				<div class="talk-box">
+					<div class="scroller">
+{#						<a id="test">테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br></a>#}
+{#						<div style="height: 2000px"></div>#}
+					</div>
+				</div>
+				<div class="input-box">
+					<button class="btn btn-plus"><i class="fa fa-plus"></i></button>
+					<textarea rows="1"></textarea>
+					<button class="btn btn-send" disabled>전송</button>
+				</div>
+			</div>
+			<div class="menu-wrapper">
 
-</div>
+			</div>
+{#		</div>#}
+{#	</div>#}
+{% endblock %}
+{% block javascript %}
+<script src="{% static "assets/js/plugins/jquery.elastic.js" %}"></script>
+<script>
+	$(document).ready(function(){
+		$('#test').on('click', function(e){
+			toggleFullScreen();
+		});
+
+		resizeInputBox();
+		resizeMenuBox();
+
+		$(window).on('resize', function(e){
+			resizeTalkBox();
+			resizeInputBox();
+			resizeMenuBox();
+		});
+		resizeTalkBox();
+
+		initSideMenu();
+
+		initInputBox();
+	});
+
+	function initInputBox() {
+
+		$('textarea').on('keyup', function(e){
+
+			var _text = $(this).val();
+
+			this.style.height = "1px";
+			this.style.height = this.scrollHeight+"px";
+
+			resizeInputBox();
+			resizeTalkBox();
+
+			if (_text.length > 0) {
+				$('.btn-send').removeAttr('disabled');
+			} else {
+				$('.btn-send').attr('disabled', 'disabled');
+			}
+		});
+
+		$('textarea').on('keydown', function(e){
+			if (e.keyCode == 13 && !e.shiftKey) {
+				e.preventDefault();
+
+				// 엔터받으면 전송하도록 한다.
+				e.preventDefault();
+				$(this).val('');
+			}
+		});
+	}
+
+	function resizeMenuBox() {
+		var width = $(window).width() - 80;
+		var right = -(width + 40);
+
+		$('.menu-wrapper').css({'width': width, 'right': right});
+	}
+
+	function initSideMenu() {
+		$('.btn-menu').on('click', function(e){
+			$('.menu-wrapper').addClass('active');
+			$('.overlay').addClass('active');
+		});
+
+		$('.overlay').on('click', function(e) {
+			$('.menu-wrapper').removeClass('active');
+			$(this).removeClass('active');
+		});
+	}
+
+	function resizeInputBox(){
+		var _textarea = $('.input-box textarea');
+		var height = _textarea.outerHeight();
+
+		$('.input-box').height(height);
+		$('.btn-plus').outerHeight(height);
+
+		_textarea.outerWidth($(window).width() - 48);
+	}
+
+	function resizeTalkBox(){
+		var height = $(window).height();
+		var input_height = $(".chat-wrapper .input-box").outerHeight();
+		var title_height = $(".chat-wrapper .title").outerHeight();
+
+		$('.scroller').height(height-title_height-input_height);
+	}
+
+	function toggleFullScreen() {
+		if (!document.fullscreenElement &&    // alternative standard method
+				!document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
+			if (document.documentElement.requestFullscreen) {
+				document.documentElement.requestFullscreen();
+			} else if (document.documentElement.msRequestFullscreen) {
+				document.documentElement.msRequestFullscreen();
+			} else if (document.documentElement.mozRequestFullScreen) {
+				document.documentElement.mozRequestFullScreen();
+			} else if (document.documentElement.webkitRequestFullscreen) {
+				document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+			}
+		} else {
+			if (document.exitFullscreen) {
+				document.exitFullscreen();
+			} else if (document.msExitFullscreen) {
+				document.msExitFullscreen();
+			} else if (document.mozCancelFullScreen) {
+				document.mozCancelFullScreen();
+			} else if (document.webkitExitFullscreen) {
+				document.webkitExitFullscreen();
+			}
+		}
+	}
+</script>
+<script type="text/jsx">
+	// React Code Goes Here
+</script>
 {% endblock %}
