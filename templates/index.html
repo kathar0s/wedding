@@ -1,35 +1,45 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block body %}
-{#	<div class="row">#}
-{#		<div class="col-md-">#}
-			<div class="chat-wrapper">
-				<div class="title">
-					<button class="btn btn-back">
-						<i class="fa fa-angle-left"></i>
-						한의주 ♡ 형정석
-					</button>
-					<button class="btn btn-menu pull-right">
-						<i class="fa fa-bars"></i>
-					</button>
-				</div>
-				<div class="talk-box">
-					<div class="scroller">
+	<div class="chat-wrapper">
+		<div class="title">
+			<button class="btn btn-back">
+				<i class="fa fa-angle-left"></i>
+				한의주 ♡ 형정석
+			</button>
+			<button class="btn btn-menu pull-right">
+				<i class="fa fa-bars"></i>
+			</button>
+		</div>
+		<div class="talk-box">
+			<div class="scroller">
 {#						<a id="test">테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br></a>#}
 {#						<div style="height: 2000px"></div>#}
-					</div>
-				</div>
-				<div class="input-box">
-					<button class="btn btn-plus"><i class="fa fa-plus"></i></button>
-					<textarea rows="1"></textarea>
-					<button class="btn btn-send" disabled>전송</button>
-				</div>
 			</div>
-			<div class="menu-wrapper">
+		</div>
+		<div class="input-box">
+			<button class="btn btn-plus"><i class="fa fa-plus"></i></button>
+			<textarea rows="1"></textarea>
+			<button class="btn btn-send" disabled>전송</button>
+		</div>
+	</div>
+	<!-- 사이드 메뉴 영역 -->
+	<div class="menu-wrapper">
 
-			</div>
-{#		</div>#}
-{#	</div>#}
+	</div>
+	<!-- 스플래쉬 영역 -->
+	<div class="splash-wrapper">
+		<div class="countdown">
+			<p>2016.04.30. SAT PM 3:00</p>
+			<h1>D-29</h1>
+		</div>
+		<div class="names">
+			<img src="{% static "assets/img/ejlvjs.png" %}">
+		</div>
+		<div class="img-title">
+			<img src="{% static "assets/img/title.png" %}">
+		</div>
+	</div>
 {% endblock %}
 {% block javascript %}
 <script src="{% static "assets/js/plugins/jquery.elastic.js" %}"></script>
@@ -41,11 +51,13 @@
 
 		resizeInputBox();
 		resizeMenuBox();
+		centeredText();
 
 		$(window).on('resize', function(e){
 			resizeTalkBox();
 			resizeInputBox();
 			resizeMenuBox();
+			centeredText();
 		});
 		resizeTalkBox();
 
@@ -78,10 +90,21 @@
 				e.preventDefault();
 
 				// 엔터받으면 전송하도록 한다.
-				e.preventDefault();
-				$(this).val('');
+				sendMessage();
 			}
 		});
+
+		$('.btn-send').on('click', function(){
+			sendMessage();
+		});
+	}
+
+	function sendMessage() {
+		var _textarea = $('textarea');
+		_textarea.val('');
+		_textarea.trigger('keyup');
+
+		_textarea.focus();
 	}
 
 	function resizeMenuBox() {
@@ -101,6 +124,14 @@
 			$('.menu-wrapper').removeClass('active');
 			$(this).removeClass('active');
 		});
+	}
+
+	function centeredText() {
+		var _name = $('.splash-wrapper .names');
+
+		var _height = $(window).height();
+
+		_name.css({'bottom': _height * 45 / 100});
 	}
 
 	function resizeInputBox(){

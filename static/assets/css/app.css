@@ -164,6 +164,36 @@ u {
 .chat-wrapper .input-box .btn-send[disabled] {
   background: #d1d1d1;
 }
+.splash-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('/s/assets/img/splash_with_text.jpg') no-repeat center bottom;
+  background-size: cover;
+}
+.splash-wrapper .countdown {
+  font-size: 25px;
+  text-align: center;
+  margin-top: 30px;
+  text-shadow: 0px 0px 2px #000;
+  color: #eee;
+}
+.splash-wrapper .img-title {
+  position: absolute;
+  bottom: 20px;
+  text-align: center;
+  width: 100%;
+  display: none;
+}
+.splash-wrapper .names {
+  width: 100%;
+  position: absolute;
+  bottom: 240px;
+  text-align: center;
+  display: none;
+}
 .kakaotalk-titlebar .chatroom-title {
   color: #FFF;
   font-size: 33px;
@@ -425,7 +455,7 @@ i[class='phone-wifi'] {
   display: block;
   width: 19px;
   height: 21px;
-  background: url('/static/img/yearend/kakao/chatroom_message_bubble_you.png');
+  background-image: url('/s/img/yearend/kakao/chatroom_message_bubble_you.png');
   /*border-radius: 1px;*/
   z-index: 0;
 }
@@ -437,7 +467,7 @@ i[class='phone-wifi'] {
   display: block;
   width: 19px;
   height: 21px;
-  background: url('/static/img/yearend/kakao/chatroom_message_bubble_me.png');
+  background: url('/s/img/yearend/kakao/chatroom_message_bubble_me.png');
   /*border-radius: 1px;*/
   z-index: 0;
 }
@@ -452,7 +482,7 @@ i[class='icon-chat-plus'] {
 i[class='icon-emoticon'] {
   width: 50px;
   height: 50px;
-  background: url('/static/img/yearend/kakao/chatroom_emoticon_button_icon_n.png');
+  background: url('/s/img/yearend/kakao/chatroom_emoticon_button_icon_n.png');
   display: inline-block;
   vertical-align: -15px;
   margin-right: 14px;
@@ -460,7 +490,7 @@ i[class='icon-emoticon'] {
 i[class='icon-feed-invite'] {
   width: 25px;
   height: 25px;
-  background: url('/static/img/yearend/kakao/icon_feed_invite.png');
+  background: url('/s/img/yearend/kakao/icon_feed_invite.png');
   display: inline-block;
   vertical-align: -15px;
   margin: auto 0;
@@ -474,7 +504,7 @@ i[class='icon-feed-invite'] {
 i[class='icon-feed-leave'] {
   width: 25px;
   height: 25px;
-  background: url('/static/img/yearend/kakao/icon_feed_leave.png');
+  background: url('/s/img/yearend/kakao/icon_feed_leave.png');
   display: inline-block;
   vertical-align: -15px;
   margin: auto 0;
