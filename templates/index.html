@@ -80,8 +80,7 @@
 	<div class="splash-wrapper" style="">
 		<div class="timebox">
 			<p>2016.04.30. SAT PM 3:00</p>
-			<h1></h1>
-			<div id="countdown" style="display: none;"></div>
+			<h1 id="countdown"></h1>
 		</div>
 		<div class="detail-wrapper">
 			<button class="btn btn-primary btn-brd" id="show-detail">자세히보기 <i class="fa fa-angle-right"></i></button>
@@ -145,8 +144,9 @@
 
 		template.find('.profile img').attr('src', '{% static "assets/img/profile/hej_hjs.png" %}');
 		template.find('.name').text('형정석');
-		template.find('.text').text(message);
+		template.find('.text').html(message.replace(/\n/g, "<br />"));
 		template.find('.date').text(now);
+
 		$('.talk-box .scroller').append(template);
 
 	}

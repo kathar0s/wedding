@@ -199,6 +199,7 @@ u {
 .chat-wrapper .talk-box .message-row .message-box .message {
   border-radius: 5px;
   padding: 5px 7px;
+  overflow-wrap: break-word;
   font-size: 18px;
   margin-top: 2px;
   max-width: 975px;
