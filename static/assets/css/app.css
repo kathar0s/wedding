@@ -176,9 +176,10 @@ u {
 .splash-wrapper .countdown {
   font-size: 25px;
   text-align: center;
-  margin-top: 30px;
+  padding: 30px 0;
   text-shadow: 0px 0px 2px #000;
   color: #eee;
+  background: rgba(0, 0, 0, 0.4);
 }
 .splash-wrapper .img-title {
   position: absolute;
@@ -193,6 +194,13 @@ u {
   bottom: 240px;
   text-align: center;
   display: none;
+}
+.splash-wrapper .detail-wrapper {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  width: 100%;
+  text-align: center;
 }
 .kakaotalk-titlebar .chatroom-title {
   color: #FFF;

@@ -33,11 +33,8 @@
 			<p>2016.04.30. SAT PM 3:00</p>
 			<h1>D-29</h1>
 		</div>
-		<div class="names">
-			<img src="{% static "assets/img/ejlvjs.png" %}">
-		</div>
-		<div class="img-title">
-			<img src="{% static "assets/img/title.png" %}">
+		<div class="detail-wrapper">
+			<button class="btn btn-lg btn-primary btn-brd" id="show-detail">자세히보기 <i class="fa fa-angle-right"></i></button>
 		</div>
 	</div>
 {% endblock %}
@@ -60,10 +57,16 @@
 			centeredText();
 		});
 		resizeTalkBox();
-
 		initSideMenu();
-
 		initInputBox();
+
+		$('#show-detail').on('click', function(e){
+			$('.splash-wrapper').fadeOut();
+		});
+
+		$('.title .btn-back').on('click', function(e){
+			$('.splash-wrapper').fadeIn();
+		});
 	});
 
 	function initInputBox() {
