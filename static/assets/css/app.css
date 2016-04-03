@@ -126,6 +126,93 @@ u {
   color: #888;
   margin-right: 1px;
 }
+.chat-wrapper .talk-box .message-row {
+  position: relative;
+  margin-top: 10px;
+}
+.chat-wrapper .talk-box .message-row.other .profile {
+  float: left;
+  margin-right: 10px;
+}
+.chat-wrapper .talk-box .message-row.other .message-box .message {
+  background-color: #FFF;
+  margin-left: 11px;
+}
+.chat-wrapper .talk-box .message-row.other .message-box .message:before {
+  position: absolute;
+  left: -10px;
+  top: 7px;
+  content: '';
+  display: block;
+  width: 11px;
+  height: 12px;
+  background: url('/s/assets/img/chatroom_message_bubble_you.png');
+  /* border-radius: 1px; */
+  z-index: 0;
+}
+.chat-wrapper .talk-box .message-row.other .message-box .extra {
+  right: -100px;
+}
+.chat-wrapper .talk-box .message-row.me .message-box .extra {
+  left: -138px;
+  padding-left: 10px;
+}
+.chat-wrapper .talk-box .message-row .profile {
+  width: 78px;
+  height: 78px;
+  border: 1px solid transparent;
+  border-radius: 45px;
+  overflow: hidden;
+  position: relative;
+  z-index: 0;
+}
+.chat-wrapper .talk-box .message-row .message-box {
+  position: relative;
+  display: inline-block;
+}
+.chat-wrapper .talk-box .message-row .message-box .name {
+  color: #000;
+  font-size: 18px;
+  padding-left: 9px;
+  padding-top: 2px;
+}
+.chat-wrapper .talk-box .message-row .message-box .message {
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 18px;
+  margin-top: 6px;
+  max-width: 975px;
+  letter-spacing: -0.009em;
+  word-break: keep-all;
+  color: #000;
+  display: inline-block;
+  position: relative;
+  box-shadow: 0 0 3px rgba(51, 51, 51, 0.8);
+  z-index: 5;
+}
+.chat-wrapper .talk-box .message-row .message-box .message .extra {
+  position: absolute;
+  bottom: 0px;
+  z-index: 0;
+  width: 90px;
+  color: #000;
+  font-size: 0.8rem;
+}
+.chat-wrapper .talk-box .message-row.other + .message-row.other {
+  margin-top: 0;
+}
+.chat-wrapper .talk-box .message-row.other + .message-row.other .profile {
+  display: none;
+}
+.chat-wrapper .talk-box .message-row.other + .message-row.other .name {
+  display: none;
+}
+.chat-wrapper .talk-box .message-row.other + .message-row.other .message:before {
+  display: none;
+}
+.chat-wrapper .talk-box .message-row.other + .message-row.other .message-box {
+  margin-left: 88px;
+}
 .chat-wrapper .input-box {
   background: #d1d1d1;
 }
@@ -172,14 +259,18 @@ u {
   height: 100%;
   background: url('/s/assets/img/splash_with_text.jpg') no-repeat center bottom;
   background-size: cover;
+  z-index: 999;
 }
-.splash-wrapper .countdown {
+.splash-wrapper .timebox {
   font-size: 25px;
   text-align: center;
-  padding: 30px 0;
+  padding: 10px 0;
   text-shadow: 0px 0px 2px #000;
   color: #eee;
   background: rgba(0, 0, 0, 0.4);
+  position: absolute;
+  width: 100%;
+  top: 0;
 }
 .splash-wrapper .img-title {
   position: absolute;
@@ -308,11 +399,6 @@ i[class='phone-wifi'] {
   display: inline-block;
   vertical-align: -10px;
   margin-right: 4px;
-}
-.message-row {
-  position: relative;
-  margin: 17px 0;
-  display: none;
 }
 .message-row.notice > .date {
   background-color: rgba(0, 0, 0, 0.3);

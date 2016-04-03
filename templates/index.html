@@ -13,8 +13,40 @@
 		</div>
 		<div class="talk-box">
 			<div class="scroller">
-{#						<a id="test">테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br>테스트<br></a>#}
-{#						<div style="height: 2000px"></div>#}
+				<div class="message-row other">
+					<div class='profile'>
+						<img src='{% static "assets/img/profile/hej_hjs.png" %}'>
+					</div>
+					<div class='message-box'>
+						<div class='name'>한의주 <i class="fa fa-heart"></i> 형정석</div>
+						<div class='message'>
+							<span class="text">
+								안녕하세요. 한의주&형정석의 모바일 청첩장입니다.
+							</span>
+							<div class='extra'>
+								<div class='badge'>4</div>
+								<div class='date'>오전 11:40</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="message-row other">
+					<div class='profile'>
+						<img src='{% static "assets/img/profile/hej_hjs.png" %}'>
+					</div>
+					<div class='message-box'>
+						<div class='name hide'>한의주 <i class="fa fa-heart"></i> 형정석</div>
+						<div class='message'>
+							<span class="text">
+								이름(성함)을 입력하시면 해당 메시지를 보여드릴께요~
+							</span>
+							<div class='extra'>
+								<div class='badge'>4</div>
+								<div class='date'>오전 11:40</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="input-box">
@@ -28,8 +60,8 @@
 
 	</div>
 	<!-- 스플래쉬 영역 -->
-	<div class="splash-wrapper">
-		<div class="countdown">
+	<div class="splash-wrapper" style="display: none;">
+		<div class="timebox">
 			<p>2016.04.30. SAT PM 3:00</p>
 			<h1>D-29</h1>
 		</div>
@@ -37,6 +69,23 @@
 			<button class="btn btn-primary btn-brd" id="show-detail">자세히보기 <i class="fa fa-angle-right"></i></button>
 		</div>
 	</div>
+{% endblock %}
+{% block template %}
+<div class="message-row other" id="message-other">
+	<div class='profile'>
+		<img src=''>
+	</div>
+	<div class='message-box'>
+		<div class='name'></div>
+		<div class='message'>
+			<span class="text"></span>
+			<div class='extra'>
+				<div class='badge'></div>
+				<div class='date'></div>
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}
 {% block javascript %}
 <script src="{% static "assets/js/plugins/jquery.elastic.js" %}"></script>
@@ -46,20 +95,36 @@
 			toggleFullScreen();
 		});
 
-		resizeInputBox();
+		resizeChatBox();
 		resizeMenuBox();
 		centeredText();
 
 		$(window).on('resize', function(e){
 			resizeTalkBox();
-			resizeInputBox();
+			resizeChatBox();
 			resizeMenuBox();
+			relocateTimeBox();
 			centeredText();
 		});
 		resizeTalkBox();
 		initSideMenu();
 		initInputBox();
 
+		initSplash();
+		relocateTimeBox();
+	});
+
+	function showMessage(type, message) {
+		var template = $('#message-' + type).clone();
+
+		template.find('.name').text('형정석');
+		template.find('.text').text(message);
+		template.find('.date').text(new Date().format("a/p hh:mm"));
+		$('.talk-box .scroller').append(template);
+
+	}
+
+	function initSplash() {
 		$('#show-detail').on('click', function(e){
 			$('.splash-wrapper').fadeOut();
 		});
@@ -67,7 +132,11 @@
 		$('.title .btn-back').on('click', function(e){
 			$('.splash-wrapper').fadeIn();
 		});
-	});
+	}
+
+	function relocateTimeBox() {
+		$('.timebox').css({'top': $(window).outerHeight() / 2 - $('.timebox').outerHeight() / 2});
+	}
 
 	function initInputBox() {
 
@@ -78,7 +147,7 @@
 			this.style.height = "1px";
 			this.style.height = this.scrollHeight+"px";
 
-			resizeInputBox();
+			resizeChatBox();
 			resizeTalkBox();
 
 			if (_text.length > 0) {
@@ -104,6 +173,8 @@
 
 	function sendMessage() {
 		var _textarea = $('textarea');
+		showMessage('other', _textarea.val());
+
 		_textarea.val('');
 		_textarea.trigger('keyup');
 
@@ -137,14 +208,18 @@
 		_name.css({'bottom': _height * 45 / 100});
 	}
 
-	function resizeInputBox(){
+	function resizeChatBox(){
 		var _textarea = $('.input-box textarea');
 		var height = _textarea.outerHeight();
+		var width = $(window).outerWidth();
 
 		$('.input-box').height(height);
 		$('.btn-plus').outerHeight(height);
 
-		_textarea.outerWidth($(window).width() - 48);
+		_textarea.outerWidth(width - 48);
+
+		// 메세지 상자 최대 크기
+		$('.message-box .message').css({'max-width': width - 10 - 88 - 100});
 	}
 
 	function resizeTalkBox(){

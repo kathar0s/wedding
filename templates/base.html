@@ -31,8 +31,12 @@
 	<div class="main">
 	{% block body %}{% endblock %}
 	</div>
+	<div class="template" style="display: none;">
+	{% block template %}{% endblock %}
+	</div>
 	<!-- jQuery first, then Bootstrap JS -->
 	<script src="{% static "assets/js/vender/tether.min.js" %}"></script>
+	<script src="{% static "libs/js/wedding.js" %}"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
 {% block javascript %}{% endblock %}
