@@ -80,7 +80,8 @@
 	<div class="splash-wrapper" style="">
 		<div class="timebox">
 			<p>2016.04.30. SAT PM 3:00</p>
-			<h1>D-29</h1>
+			<h1></h1>
+			<div id="countdown" style="display: none;"></div>
 		</div>
 		<div class="detail-wrapper">
 			<button class="btn btn-primary btn-brd" id="show-detail">자세히보기 <i class="fa fa-angle-right"></i></button>
@@ -105,7 +106,7 @@
 </div>
 {% endblock %}
 {% block javascript %}
-<script src="{% static "assets/js/plugins/jquery.elastic.js" %}"></script>
+<script src="{% static "libs/countdown/jquery.countdown.js" %}"></script>
 <script>
 	$(document).ready(function(){
 		$('#test').on('click', function(e){
@@ -151,6 +152,7 @@
 	}
 
 	function initSplash() {
+		var ts = new Date(2016, 3, 30, 15, 00);
 		$('#show-detail').on('click', function(e){
 			$('.splash-wrapper').fadeOut();
 		});
@@ -158,10 +160,22 @@
 		$('.title .btn-back').on('click', function(e){
 			$('.splash-wrapper').fadeIn();
 		});
+
+		$('#countdown').countdown({
+			timestamp	: ts,
+			callback	: function(days, hours, minutes, seconds){
+
+				var message = "";
+
+				message += "D-" + days + " " + hours + ":" + minutes + ":" + seconds;;
+
+				$('.timebox h1').html(message);
+			}
+		});
 	}
 
 	function relocateTimeBox() {
-		$('.timebox').css({'top': $(window).outerHeight() / 2 - $('.timebox').outerHeight() / 2});
+		$('.timebox').css({'top': $(window).outerHeight() / 2 + $('.timebox').outerHeight() / 5});
 	}
 
 	function initInputBox() {
