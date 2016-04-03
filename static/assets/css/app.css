@@ -42,6 +42,7 @@ u {
   right: -250px;
   background: #FFF;
   z-index: 9999;
+  box-shadow: 0 0 3px rgba(51, 51, 51, 0.8);
   transition: 0.5s;
   -webkit-transition: 0.5s;
   -moz-transition: 0.5s;
@@ -150,7 +151,7 @@ u {
   background: url('/s/assets/img/chatroom_message_bubble_you.png');
 }
 .chat-wrapper .talk-box .message-row.other .message-box .extra {
-  right: -100px;
+  right: -80px;
 }
 .chat-wrapper .talk-box .message-row.me .message-box {
   margin-right: 47px;
@@ -169,7 +170,7 @@ u {
   text-align: right;
 }
 .chat-wrapper .talk-box .message-row.me .message-box .extra {
-  left: -100px;
+  left: -80px;
   padding-left: 10px;
   text-align: right;
 }
@@ -225,7 +226,7 @@ u {
   position: absolute;
   bottom: 0px;
   z-index: 0;
-  width: 90px;
+  width: 70px;
   color: #000;
   font-size: 11px;
 }

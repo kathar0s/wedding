@@ -38,7 +38,7 @@
 						<div class='name hide'>한의주 <i class="fa fa-heart"></i> 형정석</div>
 						<div class='message'>
 							<span class="text">
-								이름(성함)을 입력하시면 해당 메시지를 보여드릴께요~
+								오른쪽 상단 메뉴를 이용하시면 결혼식 정보 및 사진을 볼 수 있어요!
 							</span>
 							<div class='extra'>
 								<div class='badge'>4</div>
@@ -47,15 +47,15 @@
 						</div>
 					</div>
 				</div>
-				<div class="message-row me">
+				<div class="message-row other">
 					<div class='profile'>
 						<img src='{% static "assets/img/profile/hej_hjs.png" %}'>
 					</div>
 					<div class='message-box'>
-						<div class='name hide'>형정석</div>
+						<div class='name hide'>한의주 <i class="fa fa-heart"></i> 형정석</div>
 						<div class='message'>
 							<span class="text">
-								이름(성함)을 입력하시면 해당 메시지를 보여드릴께요~
+								저희에게 메세지를 축복의 메세지를 남겨주세요~
 							</span>
 							<div class='extra'>
 								<div class='badge'>4</div>
@@ -107,6 +107,8 @@
 {% block javascript %}
 <script src="{% static "libs/countdown/jquery.countdown.js" %}"></script>
 <script>
+	var name = '';
+
 	$(document).ready(function(){
 		$('#test').on('click', function(e){
 			toggleFullScreen();
@@ -123,9 +125,10 @@
 			relocateTimeBox();
 			centeredText();
 		});
-		resizeTalkBox();
+
 		initSideMenu();
 		initInputBox();
+		resizeTalkBox();
 
 		initSplash();
 		relocateTimeBox();
@@ -142,8 +145,12 @@
 			prev_message_date.text('');
 		}
 
+		if (name == '') {
+			name = '';
+		}
+
 		template.find('.profile img').attr('src', '{% static "assets/img/profile/hej_hjs.png" %}');
-		template.find('.name').text('형정석');
+		template.find('.name').text(name);
 		template.find('.text').html(message.replace(/\n/g, "<br />"));
 		template.find('.date').text(now);
 
@@ -216,9 +223,9 @@
 		var _scroller = $('.scroller');
 
 		if (_textarea.val().startsWith('@')) {
-			showMessage('me', _textarea.val().replace('@', ''));
-		} else {
 			showMessage('other', _textarea.val());
+		} else {
+			showMessage('me', _textarea.val().replace('@', ''));
 		}
 
 		_textarea.val('');
@@ -268,7 +275,7 @@
 		_textarea.outerWidth(width - 48);
 
 		// 메세지 상자 최대 크기
-		$('.message-box .message').css({'max-width': width - 10 - 47 - 100});
+		$('.message-box .message').css({'max-width': width - 20 - 47 - 80});
 	}
 
 	function resizeTalkBox(){
@@ -276,7 +283,7 @@
 		var input_height = $(".chat-wrapper .input-box").outerHeight();
 		var title_height = $(".chat-wrapper .title").outerHeight();
 
-		$('.scroller').height(height-title_height-input_height);
+		$('.scroller').height(height - title_height - input_height);
 	}
 
 	function toggleFullScreen() {
