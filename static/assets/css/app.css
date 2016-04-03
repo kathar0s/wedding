@@ -158,13 +158,17 @@ u {
   padding-left: 10px;
 }
 .chat-wrapper .talk-box .message-row .profile {
-  width: 78px;
-  height: 78px;
+  width: 60px;
+  height: 60px;
   border: 1px solid transparent;
   border-radius: 45px;
   overflow: hidden;
   position: relative;
   z-index: 0;
+}
+.chat-wrapper .talk-box .message-row .profile img {
+  width: 100%;
+  height: 100%;
 }
 .chat-wrapper .talk-box .message-row .message-box {
   position: relative;
@@ -175,6 +179,7 @@ u {
   font-size: 18px;
   padding-left: 9px;
   padding-top: 2px;
+  font-size: 15px;
 }
 .chat-wrapper .talk-box .message-row .message-box .message {
   border-radius: 5px;
@@ -189,6 +194,7 @@ u {
   position: relative;
   box-shadow: 0 0 3px rgba(51, 51, 51, 0.8);
   z-index: 5;
+  font-size: 15px;
 }
 .chat-wrapper .talk-box .message-row .message-box .message .extra {
   position: absolute;
@@ -196,7 +202,7 @@ u {
   z-index: 0;
   width: 90px;
   color: #000;
-  font-size: 0.8rem;
+  font-size: 12px;
 }
 .chat-wrapper .talk-box .message-row.other + .message-row.other {
   margin-top: 0;
@@ -211,7 +217,7 @@ u {
   display: none;
 }
 .chat-wrapper .talk-box .message-row.other + .message-row.other .message-box {
-  margin-left: 88px;
+  margin-left: 70px;
 }
 .chat-wrapper .input-box {
   background: #d1d1d1;
