@@ -47,6 +47,23 @@
 						</div>
 					</div>
 				</div>
+				<div class="message-row me">
+					<div class='profile'>
+						<img src='{% static "assets/img/profile/hej_hjs.png" %}'>
+					</div>
+					<div class='message-box'>
+						<div class='name hide'>형정석</div>
+						<div class='message'>
+							<span class="text">
+								이름(성함)을 입력하시면 해당 메시지를 보여드릴께요~
+							</span>
+							<div class='extra'>
+								<div class='badge'>4</div>
+								<div class='date'>오전 11:40</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="input-box">
@@ -60,7 +77,7 @@
 
 	</div>
 	<!-- 스플래쉬 영역 -->
-	<div class="splash-wrapper" style="display: none;">
+	<div class="splash-wrapper" style="">
 		<div class="timebox">
 			<p>2016.04.30. SAT PM 3:00</p>
 			<h1>D-29</h1>
@@ -71,7 +88,7 @@
 	</div>
 {% endblock %}
 {% block template %}
-<div class="message-row other" id="message-other">
+<div class="message-row" id="tmpl-message">
 	<div class='profile'>
 		<img src=''>
 	</div>
@@ -115,11 +132,20 @@
 	});
 
 	function showMessage(type, message) {
-		var template = $('#message-' + type).clone();
+		var template = $('#tmpl-message').clone().removeAttr("id").addClass(type);
+		var now = new Date().format("a/p hh:mm");
 
+		var prev_message = $('.scroller .message-row').last();
+		var prev_message_date = prev_message.find('.date');
+
+		if (prev_message.hasClass(type) && prev_message_date.text() == now) {
+			prev_message_date.text('');
+		}
+
+		template.find('.profile img').attr('src', '{% static "assets/img/profile/hej_hjs.png" %}');
 		template.find('.name').text('형정석');
 		template.find('.text').text(message);
-		template.find('.date').text(new Date().format("a/p hh:mm"));
+		template.find('.date').text(now);
 		$('.talk-box .scroller').append(template);
 
 	}
@@ -173,12 +199,21 @@
 
 	function sendMessage() {
 		var _textarea = $('textarea');
-		showMessage('other', _textarea.val());
+		var _scroller = $('.scroller');
+
+		if (_textarea.val().startsWith('@')) {
+			showMessage('me', _textarea.val().replace('@', ''));
+		} else {
+			showMessage('other', _textarea.val());
+		}
 
 		_textarea.val('');
 		_textarea.trigger('keyup');
 
 		_textarea.focus();
+
+		// 맨 아래로 위치시키기
+		_scroller.scrollTop(_scroller[0].scrollHeight);
 	}
 
 	function resizeMenuBox() {

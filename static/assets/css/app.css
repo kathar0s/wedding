@@ -86,6 +86,7 @@ u {
   background: transparent;
   height: 47px;
   border-radius: 0;
+  font-size: 18px;
 }
 .chat-wrapper .title .btn:hover {
   background-color: rgba(0, 0, 0, 0.1);
@@ -95,7 +96,7 @@ u {
   overflow-y: auto;
 }
 .chat-wrapper .talk-box ::-webkit-scrollbar {
-  width: 7px;
+  width: 5px;
   height: 9px;
 }
 .chat-wrapper .talk-box ::-webkit-scrollbar-button:start:decrement,
@@ -120,7 +121,7 @@ u {
 }
 .chat-wrapper .talk-box .scroller {
   height: 539px;
-  padding-left: 10px;
+  padding: 0 10px;
   overflow-y: scroll;
   outline: 0;
   color: #888;
@@ -130,36 +131,51 @@ u {
   position: relative;
   margin-top: 10px;
 }
+.chat-wrapper .talk-box .message-row:last-child {
+  margin-bottom: 10px;
+}
 .chat-wrapper .talk-box .message-row.other .profile {
   float: left;
-  margin-right: 10px;
+  margin-right: 2px;
+}
+.chat-wrapper .talk-box .message-row.other .message-box {
+  margin-left: 47px;
 }
 .chat-wrapper .talk-box .message-row.other .message-box .message {
   background-color: #FFF;
-  margin-left: 11px;
+  margin-left: 7px;
 }
 .chat-wrapper .talk-box .message-row.other .message-box .message:before {
-  position: absolute;
-  left: -10px;
-  top: 7px;
-  content: '';
-  display: block;
-  width: 11px;
-  height: 12px;
+  left: -8px;
   background: url('/s/assets/img/chatroom_message_bubble_you.png');
-  /* border-radius: 1px; */
-  z-index: 0;
 }
 .chat-wrapper .talk-box .message-row.other .message-box .extra {
   right: -100px;
 }
+.chat-wrapper .talk-box .message-row.me .message-box {
+  margin-right: 47px;
+  text-align: right;
+}
+.chat-wrapper .talk-box .message-row.me .message-box .message {
+  background-color: #f6ee60;
+  margin-right: 7px;
+  text-align: left;
+}
+.chat-wrapper .talk-box .message-row.me .message-box .message:before {
+  right: -8px;
+  background: url('/s/assets/img/chatroom_message_bubble_me.png');
+}
+.chat-wrapper .talk-box .message-row.me .message-box .name {
+  text-align: right;
+}
 .chat-wrapper .talk-box .message-row.me .message-box .extra {
-  left: -138px;
+  left: -100px;
   padding-left: 10px;
+  text-align: right;
 }
 .chat-wrapper .talk-box .message-row .profile {
-  width: 60px;
-  height: 60px;
+  width: 45px;
+  height: 45px;
   border: 1px solid transparent;
   border-radius: 45px;
   overflow: hidden;
@@ -172,20 +188,19 @@ u {
 }
 .chat-wrapper .talk-box .message-row .message-box {
   position: relative;
-  display: inline-block;
 }
 .chat-wrapper .talk-box .message-row .message-box .name {
   color: #000;
   font-size: 18px;
-  padding-left: 9px;
-  padding-top: 2px;
-  font-size: 15px;
+  padding-left: 7px;
+  padding-top: 0px;
+  font-size: 14px;
 }
 .chat-wrapper .talk-box .message-row .message-box .message {
   border-radius: 5px;
-  padding: 10px;
+  padding: 5px 7px;
   font-size: 18px;
-  margin-top: 6px;
+  margin-top: 2px;
   max-width: 975px;
   letter-spacing: -0.009em;
   word-break: keep-all;
@@ -196,16 +211,25 @@ u {
   z-index: 5;
   font-size: 15px;
 }
+.chat-wrapper .talk-box .message-row .message-box .message:before {
+  position: absolute;
+  top: 7px;
+  content: '';
+  display: block;
+  width: 11px;
+  height: 12px;
+  z-index: 0;
+}
 .chat-wrapper .talk-box .message-row .message-box .message .extra {
   position: absolute;
   bottom: 0px;
   z-index: 0;
   width: 90px;
   color: #000;
-  font-size: 12px;
+  font-size: 11px;
 }
 .chat-wrapper .talk-box .message-row.other + .message-row.other {
-  margin-top: 0;
+  margin-top: 3px;
 }
 .chat-wrapper .talk-box .message-row.other + .message-row.other .profile {
   display: none;
@@ -217,7 +241,22 @@ u {
   display: none;
 }
 .chat-wrapper .talk-box .message-row.other + .message-row.other .message-box {
-  margin-left: 70px;
+  margin-left: 47px;
+}
+.chat-wrapper .talk-box .message-row.me + .message-row.me {
+  margin-top: 3px;
+}
+.chat-wrapper .talk-box .message-row.me + .message-row.me .profile {
+  display: none;
+}
+.chat-wrapper .talk-box .message-row.me + .message-row.me .name {
+  display: none;
+}
+.chat-wrapper .talk-box .message-row.me + .message-row.me .message:before {
+  display: none;
+}
+.chat-wrapper .talk-box .message-row.me + .message-row.me .message-box {
+  margin-left: 47px;
 }
 .chat-wrapper .input-box {
   background: #d1d1d1;
@@ -320,7 +359,7 @@ u {
   height: 630px;
 }
 .kakaotalk-talkbox ::-webkit-scrollbar {
-  width: 7px;
+  width: 5px;
   height: 9px;
 }
 .kakaotalk-talkbox ::-webkit-scrollbar-button:start:decrement,
@@ -346,6 +385,7 @@ u {
 .kakaotalk-talkbox .scroller {
   height: 539px;
   padding-left: 10px;
+  padding-bottom: 10px;
   overflow-y: scroll;
   outline: 0;
   color: #888;
