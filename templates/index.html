@@ -1,83 +1,8 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block body %}
-	<div class="chat-wrapper">
-		<div class="title">
-			<button class="btn btn-back">
-				<i class="fa fa-angle-left"></i>
-				한의주 ♡ 형정석
-			</button>
-			<button class="btn btn-menu pull-right">
-				<i class="fa fa-bars"></i>
-			</button>
-		</div>
-		<div class="talk-box">
-			<div class="scroller">
-				<div class="message-row other">
-					<div class='profile'>
-						<img src='{% static "assets/img/profile/hej_hjs.png" %}'>
-					</div>
-					<div class='message-box'>
-						<div class='name'>한의주 <i class="fa fa-heart"></i> 형정석</div>
-						<div class='message'>
-							<span class="text">
-								안녕하세요. 한의주&형정석의 모바일 청첩장입니다.
-							</span>
-							<div class='extra'>
-								<div class='badge'>4</div>
-								<div class='date'>오전 11:40</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="message-row other">
-					<div class='profile'>
-						<img src='{% static "assets/img/profile/hej_hjs.png" %}'>
-					</div>
-					<div class='message-box'>
-						<div class='name hide'>한의주 <i class="fa fa-heart"></i> 형정석</div>
-						<div class='message'>
-							<span class="text">
-								오른쪽 상단 메뉴를 이용하시면 결혼식 정보 및 사진을 볼 수 있어요!
-							</span>
-							<div class='extra'>
-								<div class='badge'>4</div>
-								<div class='date'>오전 11:40</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="message-row other">
-					<div class='profile'>
-						<img src='{% static "assets/img/profile/hej_hjs.png" %}'>
-					</div>
-					<div class='message-box'>
-						<div class='name hide'>한의주 <i class="fa fa-heart"></i> 형정석</div>
-						<div class='message'>
-							<span class="text">
-								저희에게 메세지를 축복의 메세지를 남겨주세요~
-							</span>
-							<div class='extra'>
-								<div class='badge'>4</div>
-								<div class='date'>오전 11:40</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="input-box">
-			<button class="btn btn-plus"><i class="fa fa-plus"></i></button>
-			<textarea rows="1"></textarea>
-			<button class="btn btn-send" disabled>전송</button>
-		</div>
-	</div>
-	<!-- 사이드 메뉴 영역 -->
-	<div class="menu-wrapper">
-
-	</div>
 	<!-- 스플래쉬 영역 -->
-	<div class="splash-wrapper" style="">
+	<div class="splash-wrapper">
 		<div class="timebox">
 			<p>2016.04.30. SAT PM 3:00</p>
 			<h1 id="countdown"></h1>
@@ -86,86 +11,66 @@
 			<button class="btn btn-primary btn-brd" id="show-detail">자세히보기 <i class="fa fa-angle-right"></i></button>
 		</div>
 	</div>
-{% endblock %}
-{% block template %}
-<div class="message-row" id="tmpl-message">
-	<div class='profile'>
-		<img src=''>
-	</div>
-	<div class='message-box'>
-		<div class='name'></div>
-		<div class='message'>
-			<span class="text"></span>
-			<div class='extra'>
-				<div class='badge'></div>
-				<div class='date'></div>
-			</div>
+	<div class="intro-wrapper">
+		<div class="profile-box">
+			<h6 class="text-center">한의주♡형정석</h6>
+			<img src="{% static "assets/img/profile/hej_hjs.png" %}">
 		</div>
+		<div class="help-block">
+			이름과 휴대폰 전화번호 뒷 4자리를 입력해주세요.<br/>
+			입력하신 정보는 개별 맞춤 청첩장을 제공하는데 사용됩니다.
+		</div>
+		<form class="form-horizontal" id="user-info" method="POST" action="{% url "card:chat" %}">
+			{% csrf_token %}
+			<div class="form-group">
+				<input type="text" id="name" name="name" class="form-control" placeholder="이름" required>
+			</div>
+			<div class="form-group">
+				<input type="text" id="last_number" name="last_number"class="form-control" placeholder="전화번호 뒷 4자리" required>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-block btn-primary">입장하기</button>
+			</div>
+		</form>
 	</div>
-</div>
 {% endblock %}
 {% block javascript %}
 <script src="{% static "libs/countdown/jquery.countdown.js" %}"></script>
+<script src="{% static "libs/validate/jquery.validate.js" %}"></script>
 <script>
 	var name = '';
 
 	$(document).ready(function(){
-		$('#test').on('click', function(e){
-			toggleFullScreen();
-		});
-
-		resizeChatBox();
-		resizeMenuBox();
-		centeredText();
 
 		$(window).on('resize', function(e){
-			resizeTalkBox();
-			resizeChatBox();
-			resizeMenuBox();
 			relocateTimeBox();
-			centeredText();
 		});
-
-		initSideMenu();
-		initInputBox();
-		resizeTalkBox();
 
 		initSplash();
 		relocateTimeBox();
 	});
 
-	function showMessage(type, message) {
-		var template = $('#tmpl-message').clone().removeAttr("id").addClass(type);
-		var now = new Date().format("a/p hh:mm");
-
-		var prev_message = $('.scroller .message-row').last();
-		var prev_message_date = prev_message.find('.date');
-
-		if (prev_message.hasClass(type) && prev_message_date.text() == now) {
-			prev_message_date.text('');
-		}
-
-		if (name == '') {
-			name = '';
-		}
-
-		template.find('.profile img').attr('src', '{% static "assets/img/profile/hej_hjs.png" %}');
-		template.find('.name').text(name);
-		template.find('.text').html(message.replace(/\n/g, "<br />"));
-		template.find('.date').text(now);
-
-		$('.talk-box .scroller').append(template);
-
-	}
-
 	function initSplash() {
 		var ts = new Date(2016, 3, 30, 15, 00);
+
+		// 유저정보를 가지고 있다면 미리 채워준다.
+		var userinfo = getCookie('userinfo');
+		if (userinfo) {
+			var tmp = deserialize(userinfo);
+			$('#name').val(tmp['name']);
+			$('#last_number').val(tmp['last_number']);
+		}
+
 		$('#show-detail').on('click', function(e){
 			$('.splash-wrapper').fadeOut();
-		});
 
-		$('.title .btn-back').on('click', function(e){
-			$('.splash-wrapper').fadeIn();
+			// 최근 하루동안 방문한 적이 있으면 굳이 물어보지 않고 채팅창으로 이동
+			if (getCookie('isVisit') && getCookie('userinfo')) {
+				$('#user-info').trigger('submit');
+			} else {
+				// 최근 방문한 기록이 없다면 유저정보를 받은 후 기록 후 채팅창으로 이동
+				showUserInfo();
+			}
 		});
 
 		$('#countdown').countdown({
@@ -174,116 +79,46 @@
 
 				var message = "";
 
-				message += "D-" + days + " " + hours + ":" + minutes + ":" + seconds;;
+				message += "D-" + days + " " + hours.zf(2) + ":" + minutes.zf(2) + ":" + seconds.zf(2);
 
 				$('.timebox h1').html(message);
 			}
 		});
 	}
 
+	function showUserInfo() {
+
+		$('#name').focus();
+
+		$('#user-info').validate({
+			submitHandler: function(form) {
+				// 방문기록 체크
+				setCookie('isVisit', 1, 30);
+
+				// 유저정보 기록
+				setCookie('userinfo', $(form).serialize(), 30);
+
+				form.submit();
+			},
+			rules: {
+				last_number: {
+					number: true
+				}
+			},
+			messages: {
+				name: {
+					required: "한글 이름을 입력해주세요."
+				},
+				last_number: {
+					required: "휴대폰 전화번호 4자리를 입력해주세요.",
+					number: "숫자만 입력가능합니다"
+				}
+			}
+		});
+	}
+
 	function relocateTimeBox() {
 		$('.timebox').css({'top': $(window).outerHeight() / 2 + $('.timebox').outerHeight() / 5});
-	}
-
-	function initInputBox() {
-
-		$('textarea').on('keyup', function(e){
-
-			var _text = $(this).val();
-
-			this.style.height = "1px";
-			this.style.height = this.scrollHeight+"px";
-
-			resizeChatBox();
-			resizeTalkBox();
-
-			if (_text.length > 0) {
-				$('.btn-send').removeAttr('disabled');
-			} else {
-				$('.btn-send').attr('disabled', 'disabled');
-			}
-		});
-
-		$('textarea').on('keydown', function(e){
-			if (e.keyCode == 13 && !e.shiftKey) {
-				e.preventDefault();
-
-				// 엔터받으면 전송하도록 한다.
-				sendMessage();
-			}
-		});
-
-		$('.btn-send').on('click', function(){
-			sendMessage();
-		});
-	}
-
-	function sendMessage() {
-		var _textarea = $('textarea');
-		var _scroller = $('.scroller');
-
-		if (_textarea.val().startsWith('@')) {
-			showMessage('other', _textarea.val());
-		} else {
-			showMessage('me', _textarea.val().replace('@', ''));
-		}
-
-		_textarea.val('');
-		_textarea.trigger('keyup');
-
-		_textarea.focus();
-
-		// 맨 아래로 위치시키기
-		_scroller.scrollTop(_scroller[0].scrollHeight);
-	}
-
-	function resizeMenuBox() {
-		var width = $(window).width() - 80;
-		var right = -(width + 40);
-
-		$('.menu-wrapper').css({'width': width, 'right': right});
-	}
-
-	function initSideMenu() {
-		$('.btn-menu').on('click', function(e){
-			$('.menu-wrapper').addClass('active');
-			$('.overlay').addClass('active');
-		});
-
-		$('.overlay').on('click', function(e) {
-			$('.menu-wrapper').removeClass('active');
-			$(this).removeClass('active');
-		});
-	}
-
-	function centeredText() {
-		var _name = $('.splash-wrapper .names');
-
-		var _height = $(window).height();
-
-		_name.css({'bottom': _height * 45 / 100});
-	}
-
-	function resizeChatBox(){
-		var _textarea = $('.input-box textarea');
-		var height = _textarea.outerHeight();
-		var width = $(window).outerWidth();
-
-		$('.input-box').height(height);
-		$('.btn-plus').outerHeight(height);
-
-		_textarea.outerWidth(width - 48);
-
-		// 메세지 상자 최대 크기
-		$('.message-box .message').css({'max-width': width - 20 - 47 - 80});
-	}
-
-	function resizeTalkBox(){
-		var height = $(window).height();
-		var input_height = $(".chat-wrapper .input-box").outerHeight();
-		var title_height = $(".chat-wrapper .title").outerHeight();
-
-		$('.scroller').height(height - title_height - input_height);
 	}
 
 	function toggleFullScreen() {

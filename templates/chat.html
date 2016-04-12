@@ -1,0 +1,283 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block body %}
+	<div class="chat-wrapper">
+		<div class="title">
+			<button class="btn btn-back">
+				<i class="fa fa-angle-left"></i>
+				한의주 ♡ 형정석
+			</button>
+			<button class="btn btn-menu pull-right">
+				<i class="fa fa-bars"></i>
+			</button>
+		</div>
+		<div class="talk-box">
+			<div class="scroller">
+				<div class="message-row other">
+					<div class='profile'>
+						<img src='{% static "assets/img/profile/hej_hjs.png" %}'>
+					</div>
+					<div class='message-box'>
+						<div class='name'>한의주 <i class="fa fa-heart"></i> 형정석</div>
+						<div class='message'>
+							<span class="text">
+								안녕하세요. 한의주&형정석의 모바일 청첩장입니다.
+							</span>
+							<div class='extra'>
+								<div class='badge'>4</div>
+								<div class='date'>오전 11:40</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="message-row other">
+					<div class='profile'>
+						<img src='{% static "assets/img/profile/hej_hjs.png" %}'>
+					</div>
+					<div class='message-box'>
+						<div class='name hide'>한의주 <i class="fa fa-heart"></i> 형정석</div>
+						<div class='message'>
+							<span class="text">
+								오른쪽 상단 메뉴를 이용하시면 결혼식 정보 및 사진을 볼 수 있어요!
+							</span>
+							<div class='extra'>
+								<div class='badge'>4</div>
+								<div class='date'>오전 11:40</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="message-row other">
+					<div class='profile'>
+						<img src='{% static "assets/img/profile/hej_hjs.png" %}'>
+					</div>
+					<div class='message-box'>
+						<div class='name hide'>한의주 <i class="fa fa-heart"></i> 형정석</div>
+						<div class='message'>
+							<span class="text">
+								저희에게 메세지를 축복의 메세지를 남겨주세요~
+							</span>
+							<div class='extra'>
+								<div class='badge'>4</div>
+								<div class='date'>오전 11:40</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="input-box">
+			<button class="btn btn-plus"><i class="fa fa-plus"></i></button>
+			<textarea rows="1"></textarea>
+			<button class="btn btn-send" disabled>전송</button>
+		</div>
+	</div>
+	<!-- 사이드 메뉴 영역 -->
+	<div class="menu-wrapper">
+
+	</div>
+{% endblock %}
+{% block template %}
+<div class="message-row" id="tmpl-message">
+	<div class='profile'>
+		<img src=''>
+	</div>
+	<div class='message-box'>
+		<div class='name'></div>
+		<div class='message'>
+			<span class="text"></span>
+			<div class='extra'>
+				<div class='badge'></div>
+				<div class='date'></div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block javascript %}
+<script src="{% static "libs/countdown/jquery.countdown.js" %}"></script>
+<script>
+	var name = '';
+
+	$(document).ready(function(){
+		$('#test').on('click', function(e){
+			toggleFullScreen();
+		});
+
+		initChatBox();
+		resizeChatBox();
+		resizeMenuBox();
+		centeredText();
+
+		$(window).on('resize', function(e){
+			resizeTalkBox();
+			resizeChatBox();
+			resizeMenuBox();
+			centeredText();
+		});
+
+		initSideMenu();
+		initInputBox();
+		resizeTalkBox();
+	});
+
+	function initChatBox(){
+		$('.title .btn-back').on('click', function(e){
+			window.history.back();
+		});
+	}
+
+	function showMessage(type, message) {
+		var template = $('#tmpl-message').clone().removeAttr("id").addClass(type);
+		var now = new Date().format("a/p hh:mm");
+
+		var prev_message = $('.scroller .message-row').last();
+		var prev_message_date = prev_message.find('.date');
+
+		if (prev_message.hasClass(type) && prev_message_date.text() == now) {
+			prev_message_date.text('');
+		}
+
+		if (name == '') {
+			name = window.prompt('이름을 입력해주세요');
+		}
+
+		template.find('.profile img').attr('src', '{% static "assets/img/profile/hej_hjs.png" %}');
+		template.find('.name').text(name);
+		template.find('.text').html(message.replace(/\n/g, "<br />"));
+		template.find('.date').text(now);
+
+		$('.talk-box .scroller').append(template);
+
+	}
+
+	function initInputBox() {
+
+		$('textarea').on('keyup', function(e){
+
+			var _text = $(this).val();
+
+			this.style.height = "1px";
+			this.style.height = this.scrollHeight+"px";
+
+			resizeChatBox();
+			resizeTalkBox();
+
+			if (_text.length > 0) {
+				$('.btn-send').removeAttr('disabled');
+			} else {
+				$('.btn-send').attr('disabled', 'disabled');
+			}
+		});
+
+		$('textarea').on('keydown', function(e){
+			if (e.keyCode == 13 && !e.shiftKey) {
+				e.preventDefault();
+
+				// 엔터받으면 전송하도록 한다.
+				sendMessage();
+			}
+		});
+
+		$('.btn-send').on('click', function(){
+			sendMessage();
+		});
+	}
+
+	function sendMessage() {
+		var _textarea = $('textarea');
+		var _scroller = $('.scroller');
+
+		if (_textarea.val().startsWith('@')) {
+			showMessage('other', _textarea.val());
+		} else {
+			showMessage('me', _textarea.val().replace('@', ''));
+		}
+
+		_textarea.val('');
+		_textarea.trigger('keyup');
+
+		_textarea.focus();
+
+		// 맨 아래로 위치시키기
+		_scroller.scrollTop(_scroller[0].scrollHeight);
+	}
+
+	function resizeMenuBox() {
+		var width = $(window).width() - 80;
+		var right = -(width + 40);
+
+		$('.menu-wrapper').css({'width': width, 'right': right});
+	}
+
+	function initSideMenu() {
+		$('.btn-menu').on('click', function(e){
+			$('.menu-wrapper').addClass('active');
+			$('.overlay').addClass('active');
+		});
+
+		$('.overlay').on('click', function(e) {
+			$('.menu-wrapper').removeClass('active');
+			$(this).removeClass('active');
+		});
+	}
+
+	function centeredText() {
+		var _name = $('.splash-wrapper .names');
+
+		var _height = $(window).height();
+
+		_name.css({'bottom': _height * 45 / 100});
+	}
+
+	function resizeChatBox(){
+		var _textarea = $('.input-box textarea');
+		var height = _textarea.outerHeight();
+		var width = $(window).outerWidth();
+
+		$('.input-box').height(height);
+		$('.btn-plus').outerHeight(height);
+
+		_textarea.outerWidth(width - 48);
+
+		// 메세지 상자 최대 크기
+		$('.message-box .message').css({'max-width': width - 20 - 47 - 85});
+	}
+
+	function resizeTalkBox(){
+		var height = $(window).height();
+		var input_height = $(".chat-wrapper .input-box").outerHeight();
+		var title_height = $(".chat-wrapper .title").outerHeight();
+
+		$('.scroller').height(height - title_height - input_height);
+	}
+
+	function toggleFullScreen() {
+		if (!document.fullscreenElement &&    // alternative standard method
+				!document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
+			if (document.documentElement.requestFullscreen) {
+				document.documentElement.requestFullscreen();
+			} else if (document.documentElement.msRequestFullscreen) {
+				document.documentElement.msRequestFullscreen();
+			} else if (document.documentElement.mozRequestFullScreen) {
+				document.documentElement.mozRequestFullScreen();
+			} else if (document.documentElement.webkitRequestFullscreen) {
+				document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+			}
+		} else {
+			if (document.exitFullscreen) {
+				document.exitFullscreen();
+			} else if (document.msExitFullscreen) {
+				document.msExitFullscreen();
+			} else if (document.mozCancelFullScreen) {
+				document.mozCancelFullScreen();
+			} else if (document.webkitExitFullscreen) {
+				document.webkitExitFullscreen();
+			}
+		}
+	}
+</script>
+<script type="text/jsx">
+	// React Code Goes Here
+</script>
+{% endblock %}

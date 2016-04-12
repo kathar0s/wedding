@@ -3,6 +3,10 @@ html a {
   -webkit-font-smoothing: antialiased !important;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
 }
+html {
+  width: 100%;
+  height: 100%;
+}
 body {
   /*font-family: 'KoPub돋움체 Medium', Helvetica,Arial,sans-serif;*/
   font-family: 'Nanum Gothic', '나눔고딕', '나눔 고딕', Helvetica, Arial, sans-serif;
@@ -10,6 +14,8 @@ body {
   background-color: #282828;
   /*text-shadow: 0 0 1px rgba(51,51,51,0.5);*/
   overflow: hidden;
+  width: 100%;
+  height: 100%;
 }
 button {
   outline: 0 !important;
@@ -19,6 +25,14 @@ u {
   border-bottom: 1px solid #000;
   border-color: inherit;
   margin-bottom: -1px;
+}
+main {
+  width: 100%;
+  height: 100%;
+}
+form label.error {
+  font-size: 0.7rem;
+  margin-bottom: 0;
 }
 .overlay.active {
   position: fixed;
@@ -153,8 +167,10 @@ u {
 .chat-wrapper .talk-box .message-row.other .message-box .extra {
   right: -80px;
 }
+.chat-wrapper .talk-box .message-row.me .profile {
+  display: none;
+}
 .chat-wrapper .talk-box .message-row.me .message-box {
-  margin-right: 47px;
   text-align: right;
 }
 .chat-wrapper .talk-box .message-row.me .message-box .message {
@@ -168,6 +184,7 @@ u {
 }
 .chat-wrapper .talk-box .message-row.me .message-box .name {
   text-align: right;
+  display: none;
 }
 .chat-wrapper .talk-box .message-row.me .message-box .extra {
   left: -80px;
@@ -339,6 +356,30 @@ u {
   left: 0;
   width: 100%;
   text-align: center;
+}
+.intro-wrapper {
+  background-color: #523738;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  color: white;
+}
+.intro-wrapper .profile-box {
+  margin: 1.2rem 0 2rem;
+  text-align: center;
+}
+.intro-wrapper .profile-box h6 {
+  margin-bottom: 0.8rem;
+}
+.intro-wrapper .profile-box img {
+  border-radius: 0.5rem;
+}
+.intro-wrapper .help-block {
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 1.2rem;
+  color: #DDD;
+  font-size: 0.7rem;
 }
 .kakaotalk-titlebar .chatroom-title {
   color: #FFF;

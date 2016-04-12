@@ -19,4 +19,6 @@ import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^userinfo/$', views.userinfo, name='userinfo'),
+    url(r'^chat/$', views.chat, name='chat'),
 ]
