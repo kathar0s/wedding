@@ -48,14 +48,13 @@ form label.error {
   -o-transition: 0.5s;
 }
 .menu-wrapper {
-  padding: 20px;
   margin: 0px;
   width: 210px;
   position: fixed;
   height: 100%;
   top: 0px;
   right: -250px;
-  background: #FFF;
+  background: #EEE;
   z-index: 9999;
   box-shadow: 0 0 3px rgba(51, 51, 51, 0.8);
   transition: 0.5s;
@@ -66,6 +65,18 @@ form label.error {
 }
 .menu-wrapper.active {
   right: 0px !important;
+}
+.menu-wrapper section {
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  background: #FFF;
+}
+.menu-wrapper section .title {
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+.menu-wrapper section .divider {
+  margin: 0.5rem 0;
 }
 .chat-wrapper {
   background-color: #98bbd1;
