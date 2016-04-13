@@ -101,7 +101,7 @@ form label.error {
   background: transparent;
   height: 47px;
   border-radius: 0;
-  font-size: 18px;
+  font-size: 1rem;
 }
 .chat-wrapper .title .btn:hover {
   background-color: rgba(0, 0, 0, 0.1);
@@ -136,8 +136,8 @@ form label.error {
 }
 .chat-wrapper .talk-box .scroller {
   height: 539px;
-  padding: 0 10px;
-  overflow-y: scroll;
+  padding: 0;
+  overflow-y: auto;
   outline: 0;
   color: #888;
   margin-right: 1px;
@@ -145,6 +145,7 @@ form label.error {
 .chat-wrapper .talk-box .message-row {
   position: relative;
   margin-top: 10px;
+  padding: 0 0.5rem;
 }
 .chat-wrapper .talk-box .message-row:last-child {
   margin-bottom: 10px;
@@ -165,7 +166,7 @@ form label.error {
   background: url('/s/assets/img/chatroom_message_bubble_you.png');
 }
 .chat-wrapper .talk-box .message-row.other .message-box .extra {
-  right: -80px;
+  right: -75px;
 }
 .chat-wrapper .talk-box .message-row.me .profile {
   display: none;
@@ -187,9 +188,28 @@ form label.error {
   display: none;
 }
 .chat-wrapper .talk-box .message-row.me .message-box .extra {
-  left: -80px;
+  left: -75px;
   padding-left: 10px;
   text-align: right;
+}
+.chat-wrapper .talk-box .message-row.notice {
+  padding: 0;
+}
+.chat-wrapper .talk-box .message-row.notice .profile,
+.chat-wrapper .talk-box .message-row.notice .name,
+.chat-wrapper .talk-box .message-row.notice .extra {
+  display: none;
+}
+.chat-wrapper .talk-box .message-row.notice .message-box {
+  background: rgba(31, 45, 56, 0.1);
+  font-size: 0.7rem;
+  color: #1d2d3a;
+  text-align: center;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+.chat-wrapper .talk-box .message-row.notice .message-box .message {
+  margin: 0 auto;
 }
 .chat-wrapper .talk-box .message-row .profile {
   width: 45px;
@@ -204,17 +224,20 @@ form label.error {
   width: 100%;
   height: 100%;
 }
-.chat-wrapper .talk-box .message-row .message-box {
+.chat-wrapper .talk-box .message-row.other .message-box,
+.chat-wrapper .talk-box .message-row.me .message-box {
   position: relative;
 }
-.chat-wrapper .talk-box .message-row .message-box .name {
+.chat-wrapper .talk-box .message-row.other .message-box .name,
+.chat-wrapper .talk-box .message-row.me .message-box .name {
   color: #000;
   font-size: 18px;
   padding-left: 7px;
   padding-top: 0px;
   font-size: 14px;
 }
-.chat-wrapper .talk-box .message-row .message-box .message {
+.chat-wrapper .talk-box .message-row.other .message-box .message,
+.chat-wrapper .talk-box .message-row.me .message-box .message {
   border-radius: 5px;
   padding: 5px 7px;
   overflow-wrap: break-word;
@@ -228,9 +251,10 @@ form label.error {
   position: relative;
   box-shadow: 0 0 3px rgba(51, 51, 51, 0.8);
   z-index: 5;
-  font-size: 15px;
+  font-size: 0.8rem;
 }
-.chat-wrapper .talk-box .message-row .message-box .message:before {
+.chat-wrapper .talk-box .message-row.other .message-box .message:before,
+.chat-wrapper .talk-box .message-row.me .message-box .message:before {
   position: absolute;
   top: 7px;
   content: '';
@@ -239,7 +263,8 @@ form label.error {
   height: 12px;
   z-index: 0;
 }
-.chat-wrapper .talk-box .message-row .message-box .message .extra {
+.chat-wrapper .talk-box .message-row.other .message-box .message .extra,
+.chat-wrapper .talk-box .message-row.me .message-box .message .extra {
   position: absolute;
   bottom: 0px;
   z-index: 0;
@@ -276,6 +301,9 @@ form label.error {
 }
 .chat-wrapper .talk-box .message-row.me + .message-row.me .message-box {
   margin-left: 47px;
+}
+.chat-wrapper .talk-box .timeline-row {
+  padding: 0.5rem 0.5rem 0.3rem;
 }
 .chat-wrapper .input-box {
   background: #d1d1d1;
@@ -380,6 +408,35 @@ form label.error {
   margin-bottom: 1.2rem;
   color: #DDD;
   font-size: 0.7rem;
+}
+.strike {
+  display: block;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.strike > span {
+  position: relative;
+  display: inline-block;
+  font-size: 0.7rem;
+  color: #1d2d3a;
+}
+.strike > span:before,
+.strike > span:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 9999px;
+  height: 1px;
+  background: rgba(31, 45, 56, 0.3);
+}
+.strike > span:before {
+  right: 100%;
+  margin-right: 0.5rem;
+}
+.strike > span:after {
+  left: 100%;
+  margin-left: 0.5rem;
 }
 .kakaotalk-titlebar .chatroom-title {
   color: #FFF;

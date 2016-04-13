@@ -19,6 +19,7 @@ import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^userinfo/$', views.userinfo, name='userinfo'),
     url(r'^chat/$', views.chat, name='chat'),
+    url(r'^chat/bot/$', views.chat_bot, name='chat_bot'),
+    url(r'^chat/send/$', views.chat_send, name='chat_send'),
 ]

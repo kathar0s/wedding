@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load customtags %}
 {% block body %}
 	<div class="chat-wrapper">
 		<div class="title">
@@ -13,62 +14,49 @@
 		</div>
 		<div class="talk-box">
 			<div class="scroller">
-				<div class="message-row other">
-					<div class='profile'>
-						<img src='{% static "assets/img/profile/hej_hjs.png" %}'>
+			{% for chatlog in chatlogs %}
+				{% ifchanged chatlog.created_at|date:"Y-n-j" %}
+				<div class="timeline-row">
+					<div class="strike">
+						<span class="date">{{ chatlog.created_at|date:"Y년 n월 j일 l" }}</span>
 					</div>
+				</div>
+				{% endifchanged %}
+				<div class="message-row {{ chatlog.type }}">
+					{% if chatlog.type != 'notice' %}
+					<div class='profile'>
+						<img src='{% static "assets/img/profile" %}/{{ chatlog.user.profile }}'>
+					</div>
+					{% endif %}
 					<div class='message-box'>
-						<div class='name'>한의주 <i class="fa fa-heart"></i> 형정석</div>
+						<div class='name'>{{ chatlog.user.name }}</div>
 						<div class='message'>
 							<span class="text">
-								안녕하세요. 한의주&형정석의 모바일 청첩장입니다.
+								{% if chatlog.type == 'me' %}
+									{{ chatlog.message }}
+								{% else %}
+									{{ chatlog.message|safe }}
+								{% endif %}
 							</span>
 							<div class='extra'>
-								<div class='badge'>4</div>
-								<div class='date'>오전 11:40</div>
+								<div class='badge'></div>
+								{% with next_log=chatlogs|next:forloop.counter0 %}
+								<div class='date' data-timestamp="{% widthratio chatlog.created_at|date:"U" 1 1000 %}">
+									{% if chatlog.created_at|date:"a g:i" != next_log.created_at|date:"a g:i" %}
+									{{ chatlog.created_at|date:"a g:i" }}
+									{% endif %}
+								</div>
+								{% endwith %}
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="message-row other">
-					<div class='profile'>
-						<img src='{% static "assets/img/profile/hej_hjs.png" %}'>
-					</div>
-					<div class='message-box'>
-						<div class='name hide'>한의주 <i class="fa fa-heart"></i> 형정석</div>
-						<div class='message'>
-							<span class="text">
-								오른쪽 상단 메뉴를 이용하시면 결혼식 정보 및 사진을 볼 수 있어요!
-							</span>
-							<div class='extra'>
-								<div class='badge'>4</div>
-								<div class='date'>오전 11:40</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="message-row other">
-					<div class='profile'>
-						<img src='{% static "assets/img/profile/hej_hjs.png" %}'>
-					</div>
-					<div class='message-box'>
-						<div class='name hide'>한의주 <i class="fa fa-heart"></i> 형정석</div>
-						<div class='message'>
-							<span class="text">
-								저희에게 메세지를 축복의 메세지를 남겨주세요~
-							</span>
-							<div class='extra'>
-								<div class='badge'>4</div>
-								<div class='date'>오전 11:40</div>
-							</div>
-						</div>
-					</div>
-				</div>
+			{% endfor %}
 			</div>
 		</div>
 		<div class="input-box">
 			<button class="btn btn-plus"><i class="fa fa-plus"></i></button>
-			<textarea rows="1"></textarea>
+			<textarea rows="1" id="message"></textarea>
 			<button class="btn btn-send" disabled>전송</button>
 		</div>
 	</div>
@@ -93,6 +81,15 @@
 		</div>
 	</div>
 </div>
+<div class="timeline-row" id="tmpl-timeline">
+	<div class="strike">
+		<span class="date"></span>
+	</div>
+</div>
+<div class="notice-row" id="tmpl-notice">
+	<span class="message"></span>
+	<span class="date"></span>
+</div>
 {% endblock %}
 {% block javascript %}
 <script src="{% static "libs/countdown/jquery.countdown.js" %}"></script>
@@ -104,7 +101,6 @@
 			toggleFullScreen();
 		});
 
-		initChatBox();
 		resizeChatBox();
 		resizeMenuBox();
 		centeredText();
@@ -119,43 +115,86 @@
 		initSideMenu();
 		initInputBox();
 		resizeTalkBox();
+
+		initChatBox();
 	});
 
 	function initChatBox(){
 		$('.title .btn-back').on('click', function(e){
 			window.history.back();
 		});
+
+		{% if chatlogs|length == 0 %}
+
+		$.post(
+			'{% url "card:chat_bot" %}',
+			{
+		        'rcode': 'greeting',
+		        'chatroom': '{{ chatroom.id }}',
+		        'csrfmiddlewaretoken': '{{ csrf_token }}'
+	        },
+			function(data) {
+				if (!data.error) {
+					var messages = data.response.messages;
+					showMessage('notice', '<strong>' + messages[0].name + '</strong>님이 <strong>{{ user.name }}</strong>님을 초대했습니다.');
+					for (var idx in messages) {
+						showMessage('other', messages[idx].message, messages[idx].name, Date.now());
+					}
+				} else {
+					alert(data.message);
+				}
+			}
+		);
+		{% endif %}
 	}
 
-	function showMessage(type, message) {
+	function showMessage(type, message, name, timestamp) {
 		var template = $('#tmpl-message').clone().removeAttr("id").addClass(type);
-		var now = new Date().format("a/p hh:mm");
+		var template_timeline = $('#tmpl-timeline').clone().removeAttr("id");
 
+		var now_time = new Date(timestamp).format("a/p h:mm");
+		var now_date = new Date(timestamp).format("yyyy년 M월 d일 E");
+
+		// 마지막 메세지를 가져온다.
 		var prev_message = $('.scroller .message-row').last();
-		var prev_message_date = prev_message.find('.date');
+		var prev_timestamp = prev_message.find('.date').data('timestamp');
+		var prev_date = new Date(prev_timestamp).format("yyyy년 M월 d일 E");
 
-		if (prev_message.hasClass(type) && prev_message_date.text() == now) {
-			prev_message_date.text('');
+		// 이전 메세지의 날짜가 완전 달라지는 경우에는 시간 경계선을 추가한다.
+		if (prev_date != now_date) {
+			template_timeline.find('.date').text(now_date);
+			$('.talk-box .scroller').append(template_timeline);
 		}
 
-		if (name == '') {
-			name = window.prompt('이름을 입력해주세요');
-		}
+		if (type == 'notice') {
+			template = $('#tmpl-notice').clone().removeAttr("id");
 
-		template.find('.profile img').attr('src', '{% static "assets/img/profile/hej_hjs.png" %}');
-		template.find('.name').text(name);
-		template.find('.text').html(message.replace(/\n/g, "<br />"));
-		template.find('.date').text(now);
+			// 메세지 추가
+			template.find('.message').html(message.replace(/\n/g, "<br />"));
+		} else {
+			var prev_message_date = prev_message.find('.date');
+
+			// 이전 메세지 타입과 현재 시간이 같은 경우에는 이전 메세지의 날짜를 삭제
+			if (prev_message.hasClass(type) && prev_message_date.text() == now_time) {
+				prev_message_date.text('');
+			}
+
+			// 메세지 추가
+			template.find('.profile img').attr('src', '{% static "assets/img/profile/hej_hjs.png" %}');
+			template.find('.name').text(name);
+			template.find('.text').html(message.replace(/\n/g, "<br />"));
+			template.find('.date').text(now_time);
+			template.find('.date').data('timestamp', timestamp);
+		}
 
 		$('.talk-box .scroller').append(template);
-
 	}
 
 	function initInputBox() {
 
-		$('textarea').on('keyup', function(e){
+		$('#message').on('keyup', function(e){
 
-			var _text = $(this).val();
+			var _text = $.trim($(this).val());
 
 			this.style.height = "1px";
 			this.style.height = this.scrollHeight+"px";
@@ -170,7 +209,7 @@
 			}
 		});
 
-		$('textarea').on('keydown', function(e){
+		$('#message').on('keydown', function(e){
 			if (e.keyCode == 13 && !e.shiftKey) {
 				e.preventDefault();
 
@@ -185,19 +224,34 @@
 	}
 
 	function sendMessage() {
-		var _textarea = $('textarea');
+		var _message = $('#message');
 		var _scroller = $('.scroller');
+		var _created_at = Date.now();
+		var message = _message.val();
+		// 서버에 메세지 저장
+		$.post(
+			'{% url "card:chat_send" %}',
+			{
+		        'message': message,
+		        'created_at': _created_at,
+				'chatroom': '{{ chatroom.id }}',
+		        'csrfmiddlewaretoken': '{{ csrf_token }}'
+	        },
+			function(data) {
+				if (!data.error) {
+					showMessage('me', message, '{{ user.name }}', _created_at);
+				} else {
+					// 에러가 난 경우 메세지 처리
+					// 다시 보내기 버튼을 활성화시켜서...
+				}
+			}
+		);
 
-		if (_textarea.val().startsWith('@')) {
-			showMessage('other', _textarea.val());
-		} else {
-			showMessage('me', _textarea.val().replace('@', ''));
-		}
+		// 텍스트 상자 초기화
+		_message.val('');
+		_message.trigger('keyup');
 
-		_textarea.val('');
-		_textarea.trigger('keyup');
-
-		_textarea.focus();
+		_message.focus();
 
 		// 맨 아래로 위치시키기
 		_scroller.scrollTop(_scroller[0].scrollHeight);
@@ -231,14 +285,14 @@
 	}
 
 	function resizeChatBox(){
-		var _textarea = $('.input-box textarea');
-		var height = _textarea.outerHeight();
+		var _message = $('#message');
+		var height = _message.outerHeight();
 		var width = $(window).outerWidth();
 
 		$('.input-box').height(height);
 		$('.btn-plus').outerHeight(height);
 
-		_textarea.outerWidth(width - 48);
+		_message.outerWidth(width - 48);
 
 		// 메세지 상자 최대 크기
 		$('.message-box .message').css({'max-width': width - 20 - 47 - 85});

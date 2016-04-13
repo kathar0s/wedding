@@ -120,7 +120,7 @@ form {
             background: transparent;
             height: 47px;
             border-radius: 0;
-			font-size: 18px;
+			font-size: 1rem;
 
             &:hover {
                 background-color: rgba(0,0,0,0.1);
@@ -164,8 +164,8 @@ form {
 
         .scroller {
             height: 539px;
-            padding: 0 10px;;
-            overflow-y: scroll;
+            padding: 0;
+            overflow-y: auto;
             outline: 0;
             color: #888;
             margin-right: 1px;
@@ -174,6 +174,7 @@ form {
 		.message-row {
 			position: relative;
 			margin-top: 10px;
+			padding: 0 0.5rem;
 
 			&:last-child {
 				margin-bottom: 10px;
@@ -198,7 +199,7 @@ form {
 					}
 
 					.extra {
-						right: -80px;
+						right: -75px;
 					}
 				}
 			}
@@ -227,9 +228,32 @@ form {
 					}
 
 					.extra {
-						left: -80px;
+						left: -75px;
 						padding-left: 10px;
 						text-align: right;
+					}
+				}
+			}
+
+			&.notice {
+				padding: 0;
+
+				.profile,
+				.name,
+				.extra {
+					display: none;
+				}
+
+				.message-box {
+					background: rgba(31, 45, 56, 0.1);
+					font-size: 0.7rem;
+					color: #1d2d3a;
+					text-align: center;
+					padding: 0.5rem;
+					margin-top: 0.5rem;
+
+					.message {
+						margin: 0 auto;
 					}
 				}
 			}
@@ -249,51 +273,54 @@ form {
 				}
 			}
 
-			.message-box {
-				position: relative;
-
-				.name {
-					color: #000;
-					font-size: 18px;
-					padding-left: 7px;
-					padding-top: 0px;
-					font-size: 14px;
-				}
-
-				.message {
-					border-radius: 5px;
-					padding: 5px 7px;
-					overflow-wrap: break-word;
-					font-size: 18px;
-					margin-top: 2px;
-					max-width: 975px;
-					letter-spacing: -0.009em;
-					word-break: keep-all;
-					color: #000;
-					display: inline-block;
+			&.other,
+			&.me {
+				.message-box {
 					position: relative;
-					box-shadow: 0 0 3px rgba(51,51,51,0.8);
-					z-index: 5;
-					font-size: 15px;
 
-					&:before {
-						position: absolute;
-						top: 7px;
-						content: '';
-						display: block;
-						width: 11px;
-						height: 12px;
-						z-index: 0;
+					.name {
+						color: #000;
+						font-size: 18px;
+						padding-left: 7px;
+						padding-top: 0px;
+						font-size: 14px;
 					}
 
-					.extra {
-						position: absolute;
-						bottom: 0px;
-						z-index: 0;
-						width: 70px;
+					.message {
+						border-radius: 5px;
+						padding: 5px 7px;
+						overflow-wrap: break-word;
+						font-size: 18px;
+						margin-top: 2px;
+						max-width: 975px;
+						letter-spacing: -0.009em;
+						word-break: keep-all;
 						color: #000;
+						display: inline-block;
+						position: relative;
+						box-shadow: 0 0 3px rgba(51, 51, 51, 0.8);
+						z-index: 5;
+						font-size: 0.8rem;
 
-						font-size: 11px;
+						&:before {
+							position: absolute;
+							top: 7px;
+							content: '';
+							display: block;
+							width: 11px;
+							height: 12px;
+							z-index: 0;
+						}
+
+						.extra {
+							position: absolute;
+							bottom: 0px;
+							z-index: 0;
+							width: 70px;
+							color: #000;
+
+							font-size: 11px;
+						}
 					}
 				}
 			}
@@ -333,6 +360,10 @@ form {
 			.message-box {
 				margin-left: 47px;
 			}
+		}
+
+		.timeline-row {
+			padding: 0.5rem 0.5rem 0.3rem;
 		}
 	}
 
@@ -456,6 +487,40 @@ form {
 		margin-bottom: 1.2rem;
 		color: #DDD;
 		font-size: 0.7rem;
+	}
+}
+
+.strike {
+	display: block;
+	text-align: center;
+	overflow: hidden;
+	white-space: nowrap;
+
+	> span {
+		position: relative;
+		display: inline-block;
+		font-size: 0.7rem;
+		color: #1d2d3a;
+
+		&:before,
+		&:after {
+			content: "";
+			position: absolute;
+			top: 50%;
+			width: 9999px;
+			height: 1px;
+			background: rgba(31, 45, 56, 0.3);
+		}
+
+		&:before {
+			right: 100%;
+			margin-right: 0.5rem;
+		}
+
+		&:after {
+			left: 100%;
+			margin-left: 0.5rem;
+		}
 	}
 }
 

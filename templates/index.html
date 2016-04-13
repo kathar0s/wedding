@@ -11,7 +11,7 @@
 			<button class="btn btn-primary btn-brd" id="show-detail">자세히보기 <i class="fa fa-angle-right"></i></button>
 		</div>
 	</div>
-	<div class="intro-wrapper">
+	<div class="intro-wrapper" style="display: none;">
 		<div class="profile-box">
 			<h6 class="text-center">한의주♡형정석</h6>
 			<img src="{% static "assets/img/profile/hej_hjs.png" %}">
@@ -87,7 +87,7 @@
 	}
 
 	function showUserInfo() {
-
+		$('.intro-wrapper').fadeIn();
 		$('#name').focus();
 
 		$('#user-info').validate({
@@ -98,7 +98,9 @@
 				// 유저정보 기록
 				setCookie('userinfo', $(form).serialize(), 30);
 
-				form.submit();
+				setTimeout(function(e) {
+					form.submit();
+				}, 1000);
 			},
 			rules: {
 				last_number: {

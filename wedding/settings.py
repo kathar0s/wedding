@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 PROJECT_APPS = [
     'card',
+    'card.core',
 ]
 
 THIRTPARTY_APPS = [
@@ -118,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ko-KR'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
