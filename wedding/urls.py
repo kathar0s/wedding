@@ -24,8 +24,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^card/', include('card.urls', namespace='card')),
-    # url(r'^$', views.index, name='index'),
-    # url(r'$', RedirectView.as_view(url='card/', permanent=False))
+    url(r'^$', RedirectView.as_view(url='card/', permanent=False))
 ]
 
 if settings.DEBUG:
