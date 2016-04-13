@@ -23,10 +23,10 @@
 		<form class="form-horizontal" id="user-info" method="POST" action="{% url "card:chat" %}">
 			{% csrf_token %}
 			<div class="form-group">
-				<input type="text" id="name" name="name" class="form-control" placeholder="이름" required>
+				<input type="text" id="name" name="name" class="form-control" placeholder="이름" required autocomplete="off">
 			</div>
 			<div class="form-group">
-				<input type="text" id="last_number" name="last_number"class="form-control" placeholder="전화번호 뒷 4자리" required>
+				<input type="text" id="last_number" name="last_number"class="form-control" placeholder="전화번호 뒷 4자리" required autocomplete="off">
 			</div>
 			<div class="form-group">
 				<button type="submit" class="btn btn-block btn-primary">입장하기</button>
