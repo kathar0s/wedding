@@ -536,13 +536,13 @@ form label.error {
 .intro-wrapper .profile-box {
   margin: 1.2rem 0 2rem;
   text-align: center;
-  width: 120px;
 }
 .intro-wrapper .profile-box h6 {
   margin-bottom: 0.8rem;
 }
 .intro-wrapper .profile-box img {
   border-radius: 0.5rem;
+  width: 120px;
 }
 .intro-wrapper .help-block {
   display: block;
