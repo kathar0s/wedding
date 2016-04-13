@@ -85,13 +85,15 @@
 			}
 		});
 
-		$('input').on('focus', function(e){
-			$(this).blur();
+		$('input').on('focus blur', function(e){
+{#			var window = $('.scroller');#}
+			$(window).scrollTop($(window)[0].scrollHeight);
 		});
 	}
 
 	function showUserInfo() {
 		$('.intro-wrapper').fadeIn();
+
 		$('#name').focus();
 
 		$('#user-info').validate({

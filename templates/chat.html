@@ -23,7 +23,7 @@
 				</div>
 				{% endifchanged %}
 				<div class="message-row {{ chatlog.type }}">
-					{% if chatlog.type != 'notice' %}
+					{% if chatlog.type == 'other' %}
 					<div class='profile'>
 						<img src='{% static "assets/img/profile" %}/{{ chatlog.user.profile }}'>
 					</div>
@@ -120,14 +120,21 @@
 	});
 
 	function initChatBox(){
-		$('#message').focus();
+		// 맨 아래로 위치시키기
+		var _scroller = $('.scroller');
+		_scroller.scrollTop(_scroller[0].scrollHeight);
 
 		$('.title .btn-back').on('click', function(e){
 			window.history.back();
 		});
 
-		{% if chatlogs|length == 0 %}
+		$('#message').on('focus blur', function(e){
+			setTimeout(function() {
+				_scroller.scrollTop(_scroller[0].scrollHeight);
+			}, 300);
+		});
 
+		{% if chatlogs|length == 0 %}
 		$.post(
 			'{% url "card:chat_bot" %}',
 			{
@@ -242,6 +249,10 @@
 			function(data) {
 				if (!data.error) {
 					showMessage('me', message, '{{ user.name }}', _created_at);
+					// 맨 아래로 위치시키기
+					setTimeout(function() {
+						_scroller.scrollTop(_scroller[0].scrollHeight);
+					}, 100);
 				} else {
 					// 에러가 난 경우 메세지 처리
 					// 다시 보내기 버튼을 활성화시켜서...
@@ -254,9 +265,6 @@
 		_message.trigger('keyup');
 
 		_message.focus();
-
-		// 맨 아래로 위치시키기
-		_scroller.scrollTop(_scroller[0].scrollHeight);
 	}
 
 	function resizeMenuBox() {
