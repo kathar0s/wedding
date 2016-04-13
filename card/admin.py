@@ -2,7 +2,7 @@ from django.contrib import admin
 
 
 # Register your models here.
-from card.models import User, ChatRooms, ChatLogs, DefaultMessages
+from card.models import User, ChatRooms, ChatLogs, DefaultMessages, Gallery, Article
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -27,3 +27,15 @@ class DefaultMessagesAdmin(admin.ModelAdmin):
     list_display = ('target', 'message', 'created_at')
     ordering = ('-id', )
 admin.site.register(DefaultMessages, DefaultMessagesAdmin)
+
+
+class GalleryAdmin(admin.ModelAdmin):
+    list_display = ('title', 'subscript')
+    ordering = ('-id', )
+admin.site.register(Gallery, GalleryAdmin)
+
+
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('title', 'content', 'created_at')
+    ordering = ('-id', )
+admin.site.register(Article, ArticleAdmin)

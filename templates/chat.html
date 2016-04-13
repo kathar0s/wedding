@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load humanize %}
 {% load staticfiles %}
 {% load customtags %}
 {% block body %}
@@ -39,7 +40,7 @@
 								{% endif %}
 							</span>
 							<div class='extra'>
-								<div class='badge'></div>
+								<div class='badge'>{% if chatlog.unread_count > 0 %}{{ chatlog.unread_count }}{% endif %}</div>
 								{% with next_log=chatlogs|next:forloop.counter0 %}
 								<div class='date' data-timestamp="{% widthratio chatlog.created_at|date:"U" 1 1000 %}">
 									{% if chatlog.created_at|date:"a g:i" != next_log.created_at|date:"a g:i" %}
@@ -62,43 +63,101 @@
 	</div>
 	<!-- 사이드 메뉴 영역 -->
 	<div class="menu-wrapper">
-		<section>
-			<div class="title">
-				<i class="pull-right fa fa-chev-right"></i>
-				안내
+		<div class="scroller">
+			<section>
+				<div class="title">
+					안내
+				</div>
+				<hr class="divider"/>
+				<div class="content">
+					<ul class="list-unstyled">
+						{% for article in articles %}
+						<li class="media article">
+							<div class="media-left">
+								<div class="category">
+									{% if article.category == 'location' %}
+									<i class="fa fa-map-marker"></i>
+									{% elif article.category == 'calendar' %}
+									<i class="fa fa-calendar"></i>
+									{% else %}
+									<i class="fa fa-list"></i>
+									{% endif %}
+								</div>
+							</div>
+							<div class="media-body">
+								<h6 class="title">{{ article.title }}</h6>
+								<div class="subscript">
+									<strong class="author">{{ article.author }}</strong> · <span class="date">{{ article.created_at|date:"Y년 n월 j일 a g:i" }}</span>
+								</div>
+							</div>
+						</li>
+						{% empty %}
+						<li class="empty">
+							아직 게시판에 등록된 글이 없습니다.
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</section>
+			<section>
+				<div class="title" href="#">
+					<i class="fa fa-angle-right pull-right"></i>
+					앨범
+				</div>
+	{#			<hr class="divider"/>#}
+				<div class="content">
+					<div class="gallery">
+						{% for img in gallery %}
+						<div class="img-frame" style="background-image: url('{{ MEDIA_URL }}{{ img.path }}')"></div>
+						{% endfor %}
+						{% for img in gallery %}
+						<div class="img-frame" style="background-image: url('{{ MEDIA_URL }}{{ img.path }}')"></div>
+						{% endfor %}
+					</div>
+				</div>
+			</section>
+			<section>
+				<div class="title">
+					신랑 / 신부
+				</div>
+				<hr class="divider"/>
+				<div class="content">
+					<ul class="list-unstyled members">
+						<li class="media article">
+							<div class="media-left">
+								<div class="profile">
+									<img src="{% static "assets/img/profile/hjs.png" %}">
+								</div>
+							</div>
+							<div class="media-body">
+								<div class="name">신랑: 형정석</div>
+							</div>
+						</li>
+						<li class="media article">
+							<div class="media-left">
+								<div class="profile">
+									<img src="{% static "assets/img/profile/hej.png" %}">
+								</div>
+							</div>
+							<div class="media-body">
+								<div class="name">신부: 한의주</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</section>
+		</div>
+		<div class="footer">
+			<div class="row">
+				<div class="col-xs-3">
+					<i class="fa fa-sign-out"></i>
+				</div>
+				<div class="col-xs-9 share">
+					<i class="fa fa-facebook"></i>
+					<i class="fa fa-twitter"></i>
+				</div>
 			</div>
-			<hr class="divider"/>
-			<div class="content">
-				<ul class="unstyled">
-					<li class="media">
-						<div class="media-left">
-							안녕
-						</div>
-						<div class="media">
-							안녕
-						</div>
-					</li>
-				</ul>
-			</div>
-		</section>
-		<section>
-			<div class="title">
-				앨범
-			</div>
-			<hr class="divider"/>
-			<div class="content">
-
-			</div>
-		</section>
-		<section>
-			<div class="title">
-				신랑 / 신부
-			</div>
-			<hr class="divider"/>
-			<div class="content">
-
-			</div>
-		</section>
+		</div>
 	</div>
 {% endblock %}
 {% block template %}
@@ -157,7 +216,7 @@
 
 	function initChatBox(){
 		// 맨 아래로 위치시키기
-		var _scroller = $('.scroller');
+		var _scroller = $('.talk-box .scroller');
 		_scroller.scrollTop(_scroller[0].scrollHeight);
 
 		$('.title .btn-back').on('click', function(e){
@@ -201,7 +260,7 @@
 		var now_date = new Date(timestamp).format("yyyy년 M월 d일 E");
 
 		// 마지막 메세지를 가져온다.
-		var prev_message = $('.scroller .message-row').last();
+		var prev_message = $('.talk-box .scroller .message-row').last();
 		var prev_timestamp = prev_message.find('.date').data('timestamp');
 		var prev_date = new Date(prev_timestamp).format("yyyy년 M월 d일 E");
 
@@ -228,6 +287,7 @@
 			template.find('.profile img').attr('src', '{% static "assets/img/profile/hej_hjs.png" %}');
 			template.find('.name').text(name);
 			template.find('.text').html(message.replace(/\n/g, "<br />"));
+			template.find('.badge').text(1);
 			template.find('.date').text(now_time);
 			template.find('.date').data('timestamp', timestamp);
 		}
@@ -270,7 +330,7 @@
 
 	function sendMessage() {
 		var _message = $('#message');
-		var _scroller = $('.scroller');
+		var _scroller = $('.talk-box .scroller');
 		var _created_at = Date.now();
 		var message = _message.val();
 		// 서버에 메세지 저장
@@ -304,7 +364,7 @@
 	}
 
 	function resizeMenuBox() {
-		var width = $(window).width() - 80;
+		var width = $(window).width() - 65;
 		var right = -(width + 40);
 
 		$('.menu-wrapper').css({'width': width, 'right': right});
@@ -347,9 +407,9 @@
 	function resizeTalkBox(){
 		var height = $(window).height();
 		var input_height = $(".chat-wrapper .input-box").outerHeight();
-		var title_height = $(".chat-wrapper .title").outerHeight();
+{#		var title_height = $(".chat-wrapper .title").outerHeight();#}
 
-		$('.scroller').height(height - title_height - input_height);
+		$('.scroller').height(height - input_height);
 	}
 
 	function toggleFullScreen() {

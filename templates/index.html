@@ -62,8 +62,6 @@
 		}
 
 		$('#show-detail').on('click', function(e){
-			$('.splash-wrapper').fadeOut();
-
 			// 최근 하루동안 방문한 적이 있으면 굳이 물어보지 않고 채팅창으로 이동
 			if (getCookie('isVisit') && getCookie('userinfo')) {
 				$('#user-info').trigger('submit');
@@ -84,17 +82,11 @@
 				$('.timebox h1').html(message);
 			}
 		});
-
-		$('input').on('focus blur', function(e){
-{#			var window = $('.scroller');#}
-			$(window).scrollTop($(window)[0].scrollHeight);
-		});
 	}
 
 	function showUserInfo() {
+		$('.splash-wrapper').fadeOut();
 		$('.intro-wrapper').fadeIn();
-
-		$('#name').focus();
 
 		$('#user-info').validate({
 			submitHandler: function(form) {
@@ -104,9 +96,7 @@
 				// 유저정보 기록
 				setCookie('userinfo', $(form).serialize(), 30);
 
-				setTimeout(function(e) {
-					form.submit();
-				}, 1000);
+				form.submit();
 			},
 			rules: {
 				last_number: {
@@ -126,7 +116,7 @@
 	}
 
 	function relocateTimeBox() {
-		$('.timebox').css({'top': $(window).outerHeight() / 2 + $('.timebox').outerHeight() / 5});
+		$('.timebox').css({'top': $(window).outerHeight() / 2 + $('.timebox').outerHeight() / 10});
 	}
 
 	function toggleFullScreen() {

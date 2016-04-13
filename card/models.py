@@ -65,6 +65,8 @@ class ChatLogs(models.Model):
     user = models.ForeignKey(User, verbose_name=u'사용자')
     message = models.TextField(default='', verbose_name=u'메세지')
 
+    unread_count = models.PositiveSmallIntegerField(default=0, verbose_name=u'읽음 표시')
+
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=u'작성시간')
 
     def save(self, *args, **kwargs):
@@ -92,3 +94,43 @@ class DefaultMessages(models.Model):
     class Meta:
         verbose_name_plural = u'기본 메세지 목록'
         verbose_name = u'기본 메세지'
+
+
+class Article(models.Model):
+    CATEGORIES = (
+        ('location', u'위치'),
+        ('notice', u'공지'),
+        ('calendar', u'일정'),
+        ('', u'일반'),
+    )
+
+    author = models.CharField(max_length=50, default='', verbose_name=u'작성자')
+
+    category = models.CharField(max_length=20, default='', choices=CATEGORIES, verbose_name=u'제목')
+
+    title = models.CharField(max_length=50, default='', verbose_name=u'제목')
+    content = models.TextField(default='', verbose_name=u'내용')
+
+    is_notice = models.BooleanField(default=False, verbose_name=u'공지여부')
+
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=u'생성일')
+
+    def __unicode__(self):
+        return u"[%s] %s" % (self.category, self.title)
+
+    class Meta:
+        verbose_name_plural = u'글 목록'
+        verbose_name = u'글'
+
+
+class Gallery(models.Model):
+    title = models.CharField(max_length=50, blank=True, default='', verbose_name=u'제목')
+    subscript = models.TextField(default='', blank=True, verbose_name=u'설명')
+    path = models.ImageField(upload_to='gallery/', verbose_name=u'이미지')
+
+    def __unicode__(self):
+        return u"[%s] %s" % (self.id, self.title)
+
+    class Meta:
+        verbose_name_plural = u'갤러리 목록'
+        verbose_name = u'갤러리'

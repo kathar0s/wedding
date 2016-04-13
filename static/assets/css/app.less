@@ -1,4 +1,4 @@
-@brand-primary: #f3e303;
+@brand-primary: #fae900;
 
 html, html a {
     -webkit-font-smoothing: antialiased !important;
@@ -66,7 +66,7 @@ form {
     height: 100%;
     top: 0px;
     right: -250px;
-    background: #EEE;
+    background: #f2f2f2;
     z-index: 9999;
 	box-shadow: 0 0 3px rgba(51,51,51,0.8);
     transition: 0.5s;
@@ -75,23 +75,171 @@ form {
     -ms-transition: 0.5s;
     -o-transition: 0.5s;
 
+	::-webkit-scrollbar {
+		width: 5px;
+		height: 9px;
+	}
+
+	::-webkit-scrollbar-button:start:decrement,
+	::-webkit-scrollbar-button:end:increment {
+		display:block;
+		height: 0;
+		background-color:transparent
+	}
+
+	::-webkit-scrollbar-track-piece {
+		background-color: transparent;
+	}
+
+	::-webkit-scrollbar-thumb:vertical {
+		height: 50px;
+		background-color: rgba(0,0,0,.2);
+		/*border-radius: 8px*/
+		width: 8px;
+
+	}
+
+	::-webkit-scrollbar-thumb:horizontal {
+		width:50px;
+		background-color: rgba(0,0,0,.004);
+		border-radius:8px;
+	}
+
     &.active { right: 0px !important; }
+
+	.scroller {
+		height: 539px;
+		padding: 0;
+		overflow-y: auto;
+		outline: 0;
+		margin-right: 0;
+	}
+
+	.footer {
+		background: #f7f7f7;
+		height: 48px;
+		padding: 0 0.5rem;
+
+		.close {
+
+		}
+
+		.share {
+			text-align: right;
+
+			.fa {
+				margin-right: 0.5rem;
+			}
+		}
+
+		.fa {
+			font-size: 1.5rem;
+			color: #9e9e9e;
+			line-height: 48px;
+			cursor: pointer;
+		}
+	}
 
 	section {
 		margin-bottom: 0.5rem;
-		padding: 0.5rem;
 		background: #FFF;
-		.title {
+
+		> .title {
 			font-weight: 700;
-			font-size: 0.8rem;
+			font-size: 0.9rem;
+			padding: 0.8rem 0.5rem;
+
+			&[href]:hover,
+			&[href]:focus,
+			&[href]:active {
+				background-color: @brand-primary;
+			}
+
+			.fa {
+				margin-top: 0.2rem;
+			}
 		}
 
-		.divider {
-			margin: 0.5rem 0;
+		> .divider {
+			margin: 0 0.5rem;
 		}
 
-		.content {
+		> .content {
+			.empty {
+				font-size: 0.8rem;
+				text-align: center;
+				padding: 2rem 0;
+			}
 
+			ul {
+				margin-bottom: 0;
+			}
+
+			.media {
+				margin-top: 0;
+			}
+
+			li.article {
+				padding: 0.5rem;
+				.category {
+					padding: 0.5rem;
+					background: #ebebeb;
+					width: 40px;
+					height: 40px;
+					text-align: center;
+				}
+
+				.title {
+					font-size: 0.8rem;
+					font-weight: 700;
+					margin: 0.5rem 0 0.2rem;
+					line-height: 1;
+				}
+
+				.subscript {
+					font-size: 0.7rem;
+					color: #a2a2a2;
+					strong {
+						color: #9b9b9b;
+					}
+				}
+			}
+
+			.gallery {
+				padding: 0 0.5rem;
+				.img-frame {
+					width: 65px;
+					height: 65px;
+					background-size:cover;
+					background-repeat:no-repeat;
+					background-position: 50% 50%;
+					display: inline-block;
+				}
+			}
+
+			.members {
+				padding: 0.5rem 0;
+
+				.profile {
+					width: 45px;
+					height: 45px;
+					border: 1px solid transparent;
+					border-radius: 45px;
+					overflow: hidden;
+					position: relative;
+					z-index: 0;
+
+					img {
+						width: 100%;
+					}
+				}
+
+				.name {
+					font-size: 0.9rem;
+					padding: 0.6rem 0
+				}
+
+			}
 		}
 	}
 
@@ -114,6 +262,7 @@ form {
 		position: fixed;
 		top: 0;
 		left: 0;
+		z-index: 1000;
 
 		width: 100%;
 
@@ -148,7 +297,7 @@ form {
 	}
 
 	.talk-box {
-        margin-top: 48px;
+        //margin-top: 48px;
         overflow-y: auto;
 
         ::-webkit-scrollbar {
@@ -165,6 +314,7 @@ form {
 
         ::-webkit-scrollbar-track-piece {
             background-color: transparent;
+			margin-top: 48px;
         }
 
         ::-webkit-scrollbar-thumb:vertical {
@@ -233,7 +383,7 @@ form {
 					text-align: right;
 
 					.message {
-						background-color: #f6ee60;
+						background-color: @brand-primary;
 						margin-right: 7px;
 						text-align: left;
 						&:before {
@@ -333,12 +483,16 @@ form {
 
 						.extra {
 							position: absolute;
-							bottom: 0px;
+							bottom: -0.2rem;
 							z-index: 0;
 							width: 70px;
 							color: #000;
 
 							font-size: 11px;
+							.badge {
+								color: @brand-primary;
+								text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.4);
+							}
 						}
 					}
 				}
@@ -383,6 +537,9 @@ form {
 
 		.timeline-row {
 			padding: 0.5rem 0.5rem 0.3rem;
+			&:first-child {
+				margin-top: 48px;
+			}
 		}
 	}
 

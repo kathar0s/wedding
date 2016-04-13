@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 
 # Create your views here.
-from models import User, ChatRooms, ChatLogs, DefaultMessages
+from models import User, ChatRooms, ChatLogs, DefaultMessages, Gallery, Article
 
 
 def index(request):
@@ -49,10 +49,15 @@ def chat(request):
 
         chatlogs = chatroom.chatlogs_set.all().order_by('created_at')
 
+        gallery = Gallery.objects.all().order_by('id')[:8]
+        articles = Article.objects.all().order_by('id')[:4]
+
         template_data = {
             'user': user,
             'chatroom': chatroom,
             'chatlogs': chatlogs,
+            'gallery': gallery,
+            'articles': articles,
         }
 
         return render(request, 'chat.html', template_data)
@@ -145,6 +150,7 @@ def chat_send(request):
                 chatlog = ChatLogs(user=user, message=message)
                 chatlog.chatroom_id = post['chatroom']
                 chatlog.type = 'me'
+                chatlog.unread_count = 1
                 chatlog.save()
 
                 data['error'] = False
