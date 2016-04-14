@@ -7,7 +7,7 @@ from django.utils.timezone import localtime
 # Create your models here.
 class User(models.Model):
     name = models.CharField(max_length=50, default='', verbose_name=u'이름')
-    last_number = models.CharField(max_length=4, default='', verbose_name=u'전화번호 뒷 4자리')
+    last_number = models.CharField(max_length=4, blank=True, default='', verbose_name=u'전화번호 뒷 4자리')
     is_staff = models.BooleanField(default=False, verbose_name=u'관리자 여부')
     profile = models.CharField(max_length=255, default='', verbose_name=u'프로필 사진 경로')
 
@@ -111,6 +111,7 @@ class Article(models.Model):
     content = models.TextField(default='', verbose_name=u'내용')
 
     is_notice = models.BooleanField(default=False, verbose_name=u'공지여부')
+    is_secret = models.BooleanField(default=False, verbose_name=u'비밀글 여부')
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=u'생성일')
 

@@ -171,10 +171,32 @@ def get_user(request):
 
     try:
         # 현재 들어온 사람에 대한 정보를 일단 불러온다. 없으면 새로 생성
-        user, created = User.objects.get_or_create(name=userinfo['name'], last_number=userinfo['last_number'])
+        user, created = User.objects.get_or_create(name=userinfo['name'])
+
+        # 새로 생기는 경우라면 번호를 입력해준다.
+        if created:
+            user.last_number = userinfo['last_number']
+            user.save()
+
+        # 기존에 이름은 존재하나 번호가 입력되지 않은 경우는 번호를 입력해주고
+        # 기존에 등록된 이름과, 전화번호라면 별도로 저장하지 않는다.
+        else:
+            if len(user.last_number) == 0:
+                user.last_number = userinfo['last_number']
+                user.save()
+
+            # 번호가 존재하면 지금 입력한 번호와 동일한지 확인하고 동일하지 않는 경우 신규 사용자로 생성한다.
+            else:
+                if user.last_number != userinfo['last_number']:
+                    user = User.objects.create(name=userinfo['name'], last_number=userinfo['last_number'])
+                    created = True
 
         return user, created
     except ValueError:
         return None, False
 
+    # 동명이인의 경우 뒷번호를 조회해서 반환한다.
+    except User.MultipleObjectsReturned:
+        user, created = User.objects.get_or_create(name=userinfo['name'], last_number=userinfo['last_number'])
 
+        return user, created
