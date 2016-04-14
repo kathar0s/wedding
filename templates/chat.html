@@ -14,7 +14,7 @@
 			</button>
 		</div>
 		<div class="talk-box">
-			<div class="scroller">
+			<div class="scroller clearfix">
 			{% for chatlog in chatlogs %}
 				{% ifchanged chatlog.created_at|date:"Y-n-j" %}
 				<div class="timeline-row">
@@ -113,9 +113,6 @@
 						{% for img in gallery %}
 						<div class="img-frame" style="background-image: url('{{ MEDIA_URL }}{{ img.path }}')"></div>
 						{% endfor %}
-						{% for img in gallery %}
-						<div class="img-frame" style="background-image: url('{{ MEDIA_URL }}{{ img.path }}')"></div>
-						{% endfor %}
 					</div>
 				</div>
 			</section>
@@ -199,21 +196,18 @@
 			toggleFullScreen();
 		});
 
-		resizeChatBox();
-		resizeMenuBox();
-		centeredText();
+		{#		resizeMenuBox();#}
+		resizeInputBox();
+{#				resizeTalkBox();#}
 
 		$(window).on('resize', function(e){
-			resizeTalkBox();
-			resizeChatBox();
 			resizeMenuBox();
-			centeredText();
+			resizeInputBox();
+			resizeTalkBox();
 		});
 
 		initSideMenu();
 		initInputBox();
-		resizeTalkBox();
-
 		initChatBox();
 	});
 
@@ -307,7 +301,7 @@
 			this.style.height = "1px";
 			this.style.height = this.scrollHeight+"px";
 
-			resizeChatBox();
+			resizeInputBox();
 			resizeTalkBox();
 
 			if (_text.length > 0) {
@@ -367,8 +361,8 @@
 	}
 
 	function resizeMenuBox() {
-		var width = $(window).width() - 65;
-		var right = -(width + 40);
+		var width = $(window).width() - 65;     // 왼쪽 여백을 얼만큼 남길지 결정
+		var right = -(width + 40);              // 초기에 얼만큼 안쪽으로 들어가 있을지 결정
 
 		$('.menu-wrapper').css({'width': width, 'right': right});
 	}
@@ -385,31 +379,24 @@
 		});
 	}
 
-	function centeredText() {
-		var _name = $('.splash-wrapper .names');
-
-		var _height = $(window).height();
-
-		_name.css({'bottom': _height * 45 / 100});
-	}
-
-	function resizeChatBox(){
+	// 입력공간 조정
+	function resizeInputBox(){
 		var _message = $('#message');
 		var height = _message.outerHeight();
 		var width = $(window).outerWidth();
 
 		$('.input-box').height(height);
 		$('.btn-plus').outerHeight(height);
-
 		_message.outerWidth(width - 48);
 
 		// 메세지 상자 최대 크기
 		$('.message-box .message').css({'max-width': width - 20 - 47 - 85});
 	}
 
+	// 채팅공간 조정
 	function resizeTalkBox(){
 		var height = $(window).height();
-		var input_height = $(".chat-wrapper .input-box").outerHeight();
+		var input_height = $("#message").outerHeight();
 {#		var title_height = $(".chat-wrapper .title").outerHeight();#}
 
 		$('.scroller').height(height - input_height);
