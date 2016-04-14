@@ -197,6 +197,16 @@ def get_user(request):
 
     # 동명이인의 경우 뒷번호를 조회해서 반환한다.
     except User.MultipleObjectsReturned:
-        user, created = User.objects.get_or_create(name=userinfo['name'], last_number=userinfo['last_number'])
+
+        # 뒷번호를 가진 유저를 먼저 찾아본다.
+        try:
+            user = User.objects.get(name=userinfo['name'], last_number=userinfo['last_number'])
+            created = False
+
+        # 기존에 등록된 유저가 없다면
+        except User.DoesNotExist:
+            user = User.objects.filter(name=userinfo['name']).exclude(last_number__iregex=r'^.{1,}$')
+            user = user[0]
+            created = True
 
         return user, created

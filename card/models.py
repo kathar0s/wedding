@@ -11,6 +11,8 @@ class User(models.Model):
     is_staff = models.BooleanField(default=False, verbose_name=u'관리자 여부')
     profile = models.CharField(max_length=255, default='', verbose_name=u'프로필 사진 경로')
 
+    is_invited = models.BooleanField(default=False, verbose_name=u'초대된 여부')
+
     date_joined_at = models.DateTimeField(default=timezone.now, verbose_name=u'최초 접속일')
     last_login_at = models.DateTimeField(default=timezone.now, verbose_name=u'최근 접속일')
 
