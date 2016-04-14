@@ -106,8 +106,7 @@ class Article(models.Model):
 
     author = models.CharField(max_length=50, default='', verbose_name=u'작성자')
 
-    category = models.CharField(max_length=20, default='', choices=CATEGORIES, verbose_name=u'제목')
-
+    category = models.CharField(max_length=20, blank=True, default='', choices=CATEGORIES, verbose_name=u'제목')
     title = models.CharField(max_length=50, default='', verbose_name=u'제목')
     content = models.TextField(default='', verbose_name=u'내용')
 
