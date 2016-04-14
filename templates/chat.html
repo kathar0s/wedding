@@ -72,6 +72,8 @@
 				<div class="content">
 					<ul class="list-unstyled">
 						{% for article in articles %}
+							{% if article.category == 'location' and not user.is_invited %}
+							{% else %}
 						<li class="media article">
 							<div class="media-left">
 								<div class="category">
@@ -91,6 +93,7 @@
 								</div>
 							</div>
 						</li>
+							{% endif %}
 						{% empty %}
 						<li class="empty">
 							아직 게시판에 등록된 글이 없습니다.
