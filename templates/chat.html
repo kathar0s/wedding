@@ -81,6 +81,7 @@
 					<ul class="list-unstyled">
 						{% for article in articles %}
 							{% if article.category == 'location' and not user.is_invited %}
+							{% elif article.is_secret and not user.is_invited %}
 							{% else %}
 						<li class="media article" href="{% url "card:article" %}?id={{ article.id }}">
 							<div class="media-left">

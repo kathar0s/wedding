@@ -587,8 +587,10 @@ form label.error {
   background-color: #523738;
   width: 100%;
   height: 100%;
-  padding: 1rem;
   color: white;
+}
+.intro-wrapper .form-wrapper {
+  padding: 1rem;
 }
 .intro-wrapper .profile-box {
   margin: 1.2rem 0 2rem;

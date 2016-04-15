@@ -14,26 +14,28 @@
 	<div class="intro-wrapper" style="display: none;">
 		<div class="scroll-section">
 			<div class="scroller">
-				<div class="profile-box">
-					<h6 class="text-center">한의주♡형정석</h6>
-					<img src="{% static "assets/img/profile/hej_hjs.png" %}">
+				<div class="form-wrapper">
+					<div class="profile-box">
+						<h6 class="text-center">한의주♡형정석</h6>
+						<img src="{% static "assets/img/profile/hej_hjs.png" %}">
+					</div>
+					<div class="help-block">
+						이름과 휴대폰 전화번호 뒷 4자리를 입력해주세요.<br/>
+						입력하신 정보는 개별 맞춤 청첩장을 제공하는데 사용됩니다.
+					</div>
+					<form class="form-horizontal" id="user-info" method="POST" action="{% url "card:chat" %}">
+						{% csrf_token %}
+						<div class="form-group">
+							<input type="text" id="name" name="name" class="form-control" placeholder="이름" required autocomplete="off">
+						</div>
+						<div class="form-group">
+							<input type="text" id="last_number" name="last_number"class="form-control" placeholder="전화번호 뒷 4자리" required autocomplete="off">
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-block btn-primary">입장하기</button>
+						</div>
+					</form>
 				</div>
-				<div class="help-block">
-					이름과 휴대폰 전화번호 뒷 4자리를 입력해주세요.<br/>
-					입력하신 정보는 개별 맞춤 청첩장을 제공하는데 사용됩니다.
-				</div>
-				<form class="form-horizontal" id="user-info" method="POST" action="{% url "card:chat" %}">
-					{% csrf_token %}
-					<div class="form-group">
-						<input type="text" id="name" name="name" class="form-control" placeholder="이름" required autocomplete="off">
-					</div>
-					<div class="form-group">
-						<input type="text" id="last_number" name="last_number"class="form-control" placeholder="전화번호 뒷 4자리" required autocomplete="off">
-					</div>
-					<div class="form-group">
-						<button type="submit" class="btn btn-block btn-primary">입장하기</button>
-					</div>
-				</form>
 			</div>
 		</div>
 	</div>
@@ -85,6 +87,13 @@
 
 				$('.timebox h1').html(message);
 			}
+		});
+
+		$('input').on('focus', function(e){
+			console.log('focus');
+			setTimeout(function(){
+				$('.scroller').scrollTop($('.scroller')[0].scrollHeight);
+			}, 100);
 		});
 	}
 
