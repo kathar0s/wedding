@@ -4,6 +4,11 @@ $(document).ready(function(e){
     $('.btn-back').on('click', function(e){
         window.history.back();
     });
+
+    $('li[href]').on('click', function(e){
+        var href = $(this).attr('href');
+        location.href = href;
+    });
 });
 
 String.prototype.string = function(len){var s = '', i = 0; while (i++ < len) { s += this; } return s;};

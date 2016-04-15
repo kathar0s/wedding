@@ -3,17 +3,17 @@
 {% load staticfiles %}
 {% load customtags %}
 {% block body %}
-	<div class="chat-wrapper">
-		<div class="title">
+	<div class="activity chat-activity">
+		<div class="header">
 			<button class="btn btn-back">
 				<i class="fa fa-angle-left"></i>
-				한의주 ♡ 형정석
+				{{ bride_groom.name }}
 			</button>
 			<button class="btn btn-menu pull-right">
 				<i class="fa fa-bars"></i>
 			</button>
 		</div>
-		<div class="talk-box">
+		<div class="talk-box scroll-section">
 			<div class="scroller" id="chat-box">
 			{% for chatlog in chatlogs %}
 				{% ifchanged chatlog.created_at|date:"Y-n-j" %}
@@ -74,7 +74,7 @@
 						{% for article in articles %}
 							{% if article.category == 'location' and not user.is_invited %}
 							{% else %}
-						<li class="media article">
+						<li class="media article" href="{% url "card:article" %}?id={{ article.id }}">
 							<div class="media-left">
 								<div class="category">
 									{% if article.category == 'location' %}
@@ -89,7 +89,7 @@
 							<div class="media-body">
 								<h6 class="title">{{ article.title }}</h6>
 								<div class="subscript">
-									<strong class="author">{{ article.author }}</strong> · <span class="date">{{ article.created_at|date:"Y년 n월 j일 a g:i" }}</span>
+									<strong class="author">{{ article.author.name }}</strong> · <span class="date">{{ article.created_at|date:"Y년 n월 j일 a g:i" }}</span>
 								</div>
 							</div>
 						</li>
@@ -148,15 +148,15 @@
 			</section>
 		</div>
 		<div class="footer">
-			<div class="row">
-				<div class="col-xs-3">
-					<i class="fa fa-sign-out"></i>
-				</div>
-				<div class="col-xs-9 share">
-					<i class="fa fa-facebook"></i>
-					<i class="fa fa-twitter"></i>
-				</div>
-			</div>
+			<button class="btn btn-close pull-left">
+				<i class="fa fa-sign-out"></i>
+			</button>
+			<button class="btn pull-right">
+				<i class="fa fa-twitter"></i>
+			</button>
+			<button class="btn pull-right">
+				<i class="fa fa-facebook"></i>
+			</button>
 		</div>
 	</div>
 {% endblock %}
@@ -223,6 +223,10 @@
 		});
 
 		$('.menu-wrapper, .overlay').on('swipe', function(e) {
+			$('.overlay').trigger('click');
+		});
+
+		$('.btn-close').on('click', function(e){
 			$('.overlay').trigger('click');
 		});
 	}
@@ -422,7 +426,7 @@
 		var input_height = $("#message").outerHeight();
 
 {#		$('.scroller').height(height);#}
-{#		var title_height = $(".chat-wrapper .title").outerHeight();#}
+{#		var title_height = $(".chat-activity .title").outerHeight();#}
 
 		$('.scroller').height(height - input_height);
 	}

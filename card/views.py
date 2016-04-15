@@ -222,3 +222,34 @@ def get_user(request):
             created = True
 
         return user, created
+
+
+def article(request):
+    user, created = get_user(request)
+
+    # 사용자가 판별되는 경우에만 표시
+    if user is not None:
+
+        get = request.GET.copy()
+
+        if 'id' in get:
+            article = Article.objects.get(id=get['id'])
+
+            bride_groom = {
+                'name': u'한의주♥형정석',
+            }
+
+            template_data = {
+                'bride_groom': bride_groom,
+                'user': user,
+                'article': article,
+            }
+
+            return render(request, 'article.html', template_data)
+
+        else:
+            return HttpResponseRedirect(reverse("card:index"))
+
+    # 쿠키값이 없으면 정상접속이 아니므로 첫화면으로 리다이렉트
+    else:
+        return HttpResponseRedirect(reverse("card:index"))

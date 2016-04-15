@@ -106,7 +106,7 @@ class Article(models.Model):
         ('', u'일반'),
     )
 
-    author = models.CharField(max_length=50, default='', verbose_name=u'작성자')
+    author = models.ForeignKey(User, db_index=True, verbose_name=u'작성자', on_delete=models.CASCADE)
 
     category = models.CharField(max_length=20, blank=True, default='', choices=CATEGORIES, verbose_name=u'제목')
     title = models.CharField(max_length=50, default='', verbose_name=u'제목')
