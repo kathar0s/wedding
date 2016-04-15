@@ -8,7 +8,8 @@ from card.models import User, ChatRooms, ChatLogs, DefaultMessages, Gallery, Art
 class UserAdmin(admin.ModelAdmin):
     list_display = ('name', 'last_number', 'is_staff', 'profile', 'date_joined_at', 'last_login_at')
     ordering = ('-id', )
-    list_filter = ['name', 'last_number']
+    search_fields = ['name', 'last_number']
+    list_filter = ['is_staff', ]
 admin.site.register(User, UserAdmin)
 
 

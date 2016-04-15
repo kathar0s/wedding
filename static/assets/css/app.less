@@ -8,49 +8,19 @@ html, html a {
 html {
 	width: 100%;
 	height: 100%;
+	overflow: hidden;
 }
 
 body {
 	/*font-family: 'KoPub돋움체 Medium', Helvetica,Arial,sans-serif;*/
 	font-family: 'Nanum Gothic', '나눔고딕', '나눔 고딕', Helvetica,Arial,sans-serif;
 	position: relative;
-	background-color: #282828;
 	/*text-shadow: 0 0 1px rgba(51,51,51,0.5);*/
 
-	overflow-x: hidden;
-	overflow-y: auto;
 	width: 100%;
 	height: 100%;
-
-	::-webkit-scrollbar {
-		width: 5px;
-		height: 9px;
-	}
-
-	::-webkit-scrollbar-button:start:decrement,
-	::-webkit-scrollbar-button:end:increment {
-		display:block;
-		height: 0;
-		background-color:transparent
-	}
-
-	::-webkit-scrollbar-track-piece {
-		background-color: transparent;
-	}
-
-	::-webkit-scrollbar-thumb:vertical {
-		height: 50px;
-		background-color: rgba(0,0,0,.2);
-		/*border-radius: 8px*/
-		width: 8px;
-
-	}
-
-	::-webkit-scrollbar-thumb:horizontal {
-		width:50px;
-		background-color: rgba(0,0,0,.004);
-		border-radius:8px;
-	}
+	background-color: #98bbd1;
+	overflow: hidden;
 }
 
 button {
@@ -67,7 +37,6 @@ u {
 main {
 	width: 100%;
 	height: 100%;
-	overflow-y: auto;
 }
 
 form {
@@ -77,17 +46,25 @@ form {
 	}
 }
 
-.overlay.active {
-    position: fixed;
-    background: rgba(0, 0, 0, 0.5);
-    width: 100%;
-    height: 100%;
-    z-index: 9998;
-    transition: 0.5s;
-    -webkit-transition: 0.5s;
-    -moz-transition: 0.5s;
-    -ms-transition: 0.5s;
-    -o-transition: 0.5s;
+.overlay {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+
+	transition: 0.5s;
+	-webkit-transition: 0.5s;
+	-moz-transition: 0.5s;
+	-ms-transition: 0.5s;
+	-o-transition: 0.5s;
+
+	opacity: 0;
+	z-index: 9998;
+	display: none;
+
+	&.active {
+		background: rgba(0, 0, 0, 0.5);
+		opacity: 1;
+	}
 }
 
 .menu-wrapper {
@@ -140,9 +117,8 @@ form {
 
 	.scroller {
 		height: 100%;
-		//height: 512px;
 		padding: 0;
-		overflow-y: scroll;
+		//overflow-y: scroll;
 		outline: 0;
 		margin-right: 0;
 	}
@@ -278,11 +254,10 @@ form {
 }
 
 .chat-wrapper {
-	background-color: #98bbd1;
-
 	box-shadow: none;
 	border: 0;
-	overflow: hidden;
+	width: 100%;
+	height: 100%;
 
 	.title {
 		height: 48px;
@@ -329,57 +304,59 @@ form {
 	}
 
 	.talk-box {
-        //margin-top: 48px;
-        overflow-y: auto;
+        height: 100%;
 
-        ::-webkit-scrollbar {
-            width: 5px;
-            height: 9px;
-        }
+		::-webkit-scrollbar {
+			width: 5px;
+			height: 9px;
+		}
 
-        ::-webkit-scrollbar-button:start:decrement,
-        ::-webkit-scrollbar-button:end:increment {
-            display:block;
-            height: 0;
-            background-color:transparent
-        }
+		::-webkit-scrollbar-button:start:decrement,
+		::-webkit-scrollbar-button:end:increment {
+			display:block;
+			height: 0;
+			background-color:transparent
+		}
 
-        ::-webkit-scrollbar-track-piece {
-            background-color: transparent;
-			margin-top: 48px;
-        }
+		::-webkit-scrollbar-track-piece {
+			background-color: transparent;
+		}
 
-        ::-webkit-scrollbar-thumb:vertical {
-            height: 50px;
-            background-color: rgba(0,0,0,.2);
-            /*border-radius: 8px*/
-            width: 8px;
+		::-webkit-scrollbar-thumb:vertical {
+			height: 50px;
+			background-color: rgba(0,0,0,.2);
+			/*border-radius: 8px*/
+			width: 8px;
 
-        }
+		}
 
-        ::-webkit-scrollbar-thumb:horizontal {
-            width:50px;
-            background-color: rgba(0,0,0,.004);
-            border-radius:8px;
-        }
+		::-webkit-scrollbar-thumb:horizontal {
+			width:50px;
+			background-color: rgba(0,0,0,.004);
+			border-radius:8px;
+		}
 
         .scroller {
-            height: 512px;
+            height: 100%;
             padding: 0;
             overflow-y: auto;
             outline: 0;
             color: #888;
             margin-right: 1px;
+
+			> *:first-child {
+				margin-top: 48px;
+			}
+
+			> *:last-child {
+				margin-bottom: 5px;
+			}
         }
 
 		.message-row {
 			position: relative;
 			margin-top: 10px;
 			padding: 0 0.5rem;
-
-			&:last-child {
-				margin-bottom: 10px;
-			}
 
 			&.other {
 
@@ -485,6 +462,7 @@ form {
 						padding-left: 7px;
 						padding-top: 0px;
 						font-size: 14px;
+						margin-bottom: 5px;
 					}
 
 					.message {
@@ -492,7 +470,7 @@ form {
 						padding: 5px 7px;
 						overflow-wrap: break-word;
 						font-size: 18px;
-						margin-top: 2px;
+						margin-bottom: 3px;
 						max-width: 975px;
 						letter-spacing: -0.009em;
 						word-break: keep-all;
@@ -569,15 +547,23 @@ form {
 
 		.timeline-row {
 			padding: 0.5rem 0.5rem 0.3rem;
-			&:first-child {
-				margin-top: 48px;
-			}
+			//&:first-child {
+			//	padding-top: 48px;
+			//}
 		}
+	}
+
+	.dummy-bottom {
+		height: 58px;
 	}
 
 	.input-box {
 		background: #d1d1d1;
 		height: 48px;
+		position: fixed;
+		bottom: 0;
+		z-index: 1000;
+		width: 100%;
 
 		.btn-plus {
 			width: 48px;
@@ -594,14 +580,14 @@ form {
 		textarea {
 			height: 48px;
 			max-height: 95px;
+			width: 100%;
 			resize: none;
-			padding: 0.75rem .75rem;
+			padding: 0.75rem 170px .75rem .75rem;
 			margin-left: 48px;
 			border-radius: 0;
 			border: 0;
 			outline: 0;
             overflow: hidden;
-            padding-right: 100px;
 		}
 
         .btn-send {

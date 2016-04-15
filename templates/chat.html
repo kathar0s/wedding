@@ -14,7 +14,7 @@
 			</button>
 		</div>
 		<div class="talk-box">
-			<div class="scroller clearfix">
+			<div class="scroller" id="chat-box">
 			{% for chatlog in chatlogs %}
 				{% ifchanged chatlog.created_at|date:"Y-n-j" %}
 				<div class="timeline-row">
@@ -31,7 +31,7 @@
 					{% endif %}
 					<div class='message-box'>
 						<div class='name'>{{ chatlog.user.name }}</div>
-						<div class='message'>
+						<div class='message' data-timestamp="{% widthratio chatlog.created_at|date:"U" 1 1000 %}">
 							<span class="text">
 								{% if chatlog.type == 'me' %}
 									{{ chatlog.message }}
@@ -42,7 +42,7 @@
 							<div class='extra'>
 								<div class='badge'>{% if chatlog.unread_count > 0 %}{{ chatlog.unread_count }}{% endif %}</div>
 								{% with next_log=chatlogs|next:forloop.counter0 %}
-								<div class='date' data-timestamp="{% widthratio chatlog.created_at|date:"U" 1 1000 %}">
+								<div class='date'>
 									{% if chatlog.created_at|date:"a g:i" != next_log.created_at|date:"a g:i" %}
 									{{ chatlog.created_at|date:"a g:i" }}
 									{% endif %}
@@ -181,10 +181,6 @@
 		<span class="date"></span>
 	</div>
 </div>
-<div class="notice-row" id="tmpl-notice">
-	<span class="message"></span>
-	<span class="date"></span>
-</div>
 {% endblock %}
 {% block javascript %}
 <script src="{% static "libs/countdown/jquery.countdown.js" %}"></script>
@@ -196,14 +192,12 @@
 			toggleFullScreen();
 		});
 
-		{#		resizeMenuBox();#}
+		resizeMenuBox();
 		resizeInputBox();
-{#				resizeTalkBox();#}
 
 		$(window).on('resize', function(e){
-			resizeMenuBox();
 			resizeInputBox();
-			resizeTalkBox();
+			resizeMenuBox();
 		});
 
 		initSideMenu();
@@ -211,22 +205,83 @@
 		initChatBox();
 	});
 
-	function initChatBox(){
-		// 맨 아래로 위치시키기
-		var _scroller = $('.talk-box .scroller');
-		_scroller.scrollTop(_scroller[0].scrollHeight);
+	// 오른쪽 사이드 메뉴 액션 초기화
+	function initSideMenu() {
 
-		$('.title .btn-back').on('click', function(e){
-			window.history.back();
+		// 메뉴를 클릭하면 열릴 수 있도록
+		$('.btn-menu').on('click', function(e){
+			$('.menu-wrapper').addClass('active');
+			$('.overlay').show();
+			$('.overlay').addClass('active');
 		});
 
+		// 오버레이 영역을 클릭하면 닫힐 수 있도록
+		$('.overlay').on('click', function(e) {
+			$('.menu-wrapper').removeClass('active');
+			$(this).removeClass('active');
+			$(this).hide();
+		});
+
+		$('.menu-wrapper, .overlay').on('swipe', function(e) {
+			$('.overlay').trigger('click');
+		});
+	}
+
+	// 입력상자 이벤트 정의
+	function initInputBox() {
+
+		$('#message').on('keyup', function(e){
+
+			var _text = $.trim($(this).val());
+
+			this.style.height = "1px";
+			this.style.height = this.scrollHeight+"px";
+
+			resizeInputBox();
+
+			if (_text.length > 0) {
+				$('.btn-send').removeAttr('disabled');
+			} else {
+				$('.btn-send').attr('disabled', 'disabled');
+			}
+		});
+
+		$('#message').on('keydown', function(e){
+
+			// 엔터받으면 전송하도록 한다. (쉬프트키 누르면 그냥 입력될수 있도록)
+			if (e.keyCode == 13 && !e.shiftKey) {
+				e.preventDefault();
+				sendMessage();
+			}
+		});
+
+		$('.btn-send').on('click', function(){
+			sendMessage();
+		});
+	}
+
+	function initChatBox(){
+		// 내용이 긴 경우 맨 아래로 스크롤 이동
+		var _chatbox = $('#chat-box');
+		_chatbox.scrollTop(_chatbox[0].scrollHeight);
+
+{% comment %}
+		// 메세지 상자에 글이 입력되려고 하면 스크롤을 맨 아래로 이동
 		$('#message').on('focus blur', function(e){
+			// 단 현재 글을 입력할 때 맨 아래인 경우에만 맨 아래로 이동 유지
 			setTimeout(function() {
-				_scroller.scrollTop(_scroller[0].scrollHeight);
+				_chatbox.scrollTop(_chatbox[0].scrollHeight);
 			}, 300);
 		});
+{% endcomment %}
 
 		{% if chatlogs|length == 0 %}
+		// 아무것도 없는 경우 초기화 세팅
+
+		// 초기에 생성되는 메세지이므로 초대 메시지를 먼저 띄운다.
+		showMessage('notice', '<strong>{{ bride_groom.name }}</strong>님이 <strong>{{ user.name }}</strong>님을 초대했습니다.');
+
+		// 설정된 채팅 메시지를 불러와서 채팅창에 뿌려준다.
 		$.post(
 			'{% url "card:chat_bot" %}',
 			{
@@ -237,19 +292,24 @@
 			function(data) {
 				if (!data.error) {
 					var messages = data.response.messages;
-					showMessage('notice', '<strong>' + messages[0].name + '</strong>님이 <strong>{{ user.name }}</strong>님을 초대했습니다.');
+
 					for (var idx in messages) {
-						showMessage('other', messages[idx].message, messages[idx].name, Date.now());
+						(function(i) {
+							setTimeout(function(){
+								showMessage('other', messages[i].message, messages[i].name, messages[i].profile);
+							}, 1000 * i);
+						})(idx);
 					}
 				} else {
-					alert(data.message);
+					showMessage('other', data.response.message, data.response.name, data.response.profile);
 				}
 			}
 		);
 		{% endif %}
 	}
 
-	function showMessage(type, message, name, timestamp) {
+	function showMessage(type, message, name, profile, timestamp) {
+		timestamp = timestamp || Date.now();
 		var template = $('#tmpl-message').clone().removeAttr("id").addClass(type);
 		var template_timeline = $('#tmpl-timeline').clone().removeAttr("id");
 
@@ -257,19 +317,17 @@
 		var now_date = new Date(timestamp).format("yyyy년 M월 d일 E");
 
 		// 마지막 메세지를 가져온다.
-		var prev_message = $('.talk-box .scroller .message-row').last();
-		var prev_timestamp = prev_message.find('.date').data('timestamp');
+		var prev_message = $('#chat-box .message-row').last();
+		var prev_timestamp = prev_message.find('.message').data('timestamp');
 		var prev_date = new Date(prev_timestamp).format("yyyy년 M월 d일 E");
 
 		// 이전 메세지의 날짜가 완전 달라지는 경우에는 시간 경계선을 추가한다.
 		if (prev_date != now_date) {
 			template_timeline.find('.date').text(now_date);
-			$('.talk-box .scroller').append(template_timeline);
+			$('#chat-box').append(template_timeline);
 		}
 
 		if (type == 'notice') {
-			template = $('#tmpl-notice').clone().removeAttr("id");
-
 			// 메세지 추가
 			template.find('.message').html(message.replace(/\n/g, "<br />"));
 		} else {
@@ -285,51 +343,21 @@
 			template.find('.name').text(name);
 			template.find('.text').html(message.replace(/\n/g, "<br />"));
 			template.find('.badge').text(1);
-			template.find('.date').text(now_time);
-			template.find('.date').data('timestamp', timestamp);
 		}
 
-		$('.talk-box .scroller').append(template);
-	}
+		// 메세지의 시간기록
+		template.find('.date').text(now_time);
+		template.find('.message').data('timestamp', timestamp);
 
-	function initInputBox() {
-
-		$('#message').on('keyup', function(e){
-
-			var _text = $.trim($(this).val());
-
-			this.style.height = "1px";
-			this.style.height = this.scrollHeight+"px";
-
-			resizeInputBox();
-			resizeTalkBox();
-
-			if (_text.length > 0) {
-				$('.btn-send').removeAttr('disabled');
-			} else {
-				$('.btn-send').attr('disabled', 'disabled');
-			}
-		});
-
-		$('#message').on('keydown', function(e){
-			if (e.keyCode == 13 && !e.shiftKey) {
-				e.preventDefault();
-
-				// 엔터받으면 전송하도록 한다.
-				sendMessage();
-			}
-		});
-
-		$('.btn-send').on('click', function(){
-			sendMessage();
-		});
+		$('#chat-box').append(template);
 	}
 
 	function sendMessage() {
 		var _message = $('#message');
-		var _scroller = $('.talk-box .scroller');
+		var _scroller = $('#chat-box');
 		var _created_at = Date.now();
 		var message = _message.val();
+
 		// 서버에 메세지 저장
 		$.post(
 			'{% url "card:chat_send" %}',
@@ -341,11 +369,11 @@
 	        },
 			function(data) {
 				if (!data.error) {
-					showMessage('me', message, '{{ user.name }}', _created_at);
+					showMessage('me', message, '{{ user.name }}', '', _created_at);
 					// 맨 아래로 위치시키기
 					setTimeout(function() {
 						_scroller.scrollTop(_scroller[0].scrollHeight);
-					}, 100);
+					}, 50);
 				} else {
 					// 에러가 난 경우 메세지 처리
 					// 다시 보내기 버튼을 활성화시켜서...
@@ -367,27 +395,22 @@
 		$('.menu-wrapper').css({'width': width, 'right': right});
 	}
 
-	function initSideMenu() {
-		$('.btn-menu').on('click', function(e){
-			$('.menu-wrapper').addClass('active');
-			$('.overlay').addClass('active');
-		});
-
-		$('.overlay').on('click', function(e) {
-			$('.menu-wrapper').removeClass('active');
-			$(this).removeClass('active');
-		});
-	}
-
 	// 입력공간 조정
 	function resizeInputBox(){
 		var _message = $('#message');
-		var height = _message.outerHeight();
+		var height = _message.outerHeight();            // 메세지의 크기를 가져온다.
 		var width = $(window).outerWidth();
+		var _chatbox = $('#chat-box');
+		var diff = height - $('.input-box').height();   // 메세지 크기와 현재 입력창의 크기 변화
 
-		$('.input-box').height(height);
+		$('.input-box').height(height);                 // 입력창을 메세지 크기만큼 늘려준다.
 		$('.btn-plus').outerHeight(height);
-		_message.outerWidth(width - 48);
+
+		resizeTalkBox();
+
+		if (_chatbox.scrollTop() + _chatbox.height() + diff ==  _chatbox[0].scrollHeight) {
+			_chatbox.scrollTop(_chatbox[0].scrollHeight);
+		}
 
 		// 메세지 상자 최대 크기
 		$('.message-box .message').css({'max-width': width - 20 - 47 - 85});
@@ -395,8 +418,10 @@
 
 	// 채팅공간 조정
 	function resizeTalkBox(){
-		var height = $(window).height();
+		var height = $(window).height();                    // 윈도우크기
 		var input_height = $("#message").outerHeight();
+
+{#		$('.scroller').height(height);#}
 {#		var title_height = $(".chat-wrapper .title").outerHeight();#}
 
 		$('.scroller').height(height - input_height);

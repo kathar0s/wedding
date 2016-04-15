@@ -49,10 +49,15 @@ def chat(request):
 
         chatlogs = chatroom.chatlogs_set.all().order_by('created_at')
 
-        gallery = Gallery.objects.all().order_by('id')[:8]
+        gallery = Gallery.objects.all().order_by('id')[:4]
         articles = Article.objects.all().order_by('id')[:4]
 
+        bride_groom = {
+            'name': u'한의주♥형정석',
+        }
+
         template_data = {
+            'bride_groom': bride_groom,
             'user': user,
             'chatroom': chatroom,
             'chatlogs': chatlogs,
@@ -104,7 +109,8 @@ def chat_bot(request):
             for default_message in default_messages:
                 messages.append({
                     'message': default_message.message,
-                    'name': default_message.user.name
+                    'name': default_message.user.name,
+                    'profile': default_message.user.profile
                 })
 
                 chatlog = ChatLogs(user=default_message.user, message=default_message.message)
@@ -117,6 +123,12 @@ def chat_bot(request):
             data['message'] = u'초기 인사말 불러오기 완료'
             data['response'] = {
                 'messages': messages
+            }
+        else:
+            data['response'] = {
+                'message': u'잘못된 코드를 입력하셨습니다.',
+                'name': u'형정석',
+                'profile': u'hjs.png'
             }
 
         return JsonResponse(data)
