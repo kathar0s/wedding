@@ -5,7 +5,7 @@ $(document).ready(function(e){
         window.history.back();
     });
 
-    $('li[href]').on('click', function(e){
+    $('div[href], li[href]').on('click', function(e){
         var href = $(this).attr('href');
         location.href = href;
     });

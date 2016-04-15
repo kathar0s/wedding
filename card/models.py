@@ -106,7 +106,8 @@ class Article(models.Model):
         ('', u'일반'),
     )
 
-    author = models.ForeignKey(User, db_index=True, verbose_name=u'작성자', on_delete=models.CASCADE)
+    author = models.ForeignKey(User, db_index=True, verbose_name=u'작성자', on_delete=models.CASCADE,
+                               limit_choices_to={'is_staff': True})
 
     category = models.CharField(max_length=20, blank=True, default='', choices=CATEGORIES, verbose_name=u'제목')
     title = models.CharField(max_length=50, default='', verbose_name=u'제목')
@@ -127,7 +128,7 @@ class Article(models.Model):
 
 class Gallery(models.Model):
     title = models.CharField(max_length=50, blank=True, default='', verbose_name=u'제목')
-    subscript = models.TextField(default='', blank=True, verbose_name=u'설명')
+    description = models.TextField(default='', blank=True, verbose_name=u'설명')
     path = models.ImageField(upload_to='gallery/', verbose_name=u'이미지')
 
     def __unicode__(self):

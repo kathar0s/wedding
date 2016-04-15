@@ -253,3 +253,28 @@ def article(request):
     # 쿠키값이 없으면 정상접속이 아니므로 첫화면으로 리다이렉트
     else:
         return HttpResponseRedirect(reverse("card:index"))
+
+
+def album(request):
+    user, created = get_user(request)
+
+    # 사용자가 판별되는 경우에만 표시
+    if user is not None:
+
+        photos = Gallery.objects.all().order_by('id')
+
+        bride_groom = {
+            'name': u'한의주♥형정석',
+        }
+
+        template_data = {
+            'bride_groom': bride_groom,
+            'user': user,
+            'photos': photos,
+        }
+
+        return render(request, 'album.html', template_data)
+
+    # 쿠키값이 없으면 정상접속이 아니므로 첫화면으로 리다이렉트
+    else:
+        return HttpResponseRedirect(reverse("card:index"))

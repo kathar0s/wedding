@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^chat/bot/$', views.chat_bot, name='chat_bot'),
     url(r'^chat/send/$', views.chat_send, name='chat_send'),
     url(r'^article/$', views.article, name='article'),
+    url(r'^album/$', views.album, name='album'),
 ]

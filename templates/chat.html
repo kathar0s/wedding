@@ -103,7 +103,7 @@
 				</div>
 			</section>
 			<section>
-				<div class="title" href="#">
+				<div class="title" href="{% url "card:album" %}">
 					<i class="fa fa-angle-right pull-right"></i>
 					앨범
 				</div>
@@ -111,7 +111,9 @@
 				<div class="content">
 					<div class="gallery">
 						{% for img in gallery %}
-						<div class="img-frame" style="background-image: url('{{ MEDIA_URL }}{{ img.path }}')"></div>
+						<a href="{% url "card:album" %}#&gid=1&pid={{ forloop.counter }}">
+							<div class="img-frame" style="background-image: url('{{ MEDIA_URL }}{{ img.path }}')"></div>
+						</a>
 						{% endfor %}
 					</div>
 				</div>

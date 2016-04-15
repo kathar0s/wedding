@@ -32,7 +32,7 @@ admin.site.register(DefaultMessages, DefaultMessagesAdmin)
 
 
 class GalleryAdmin(admin.ModelAdmin):
-    list_display = ('title', 'subscript')
+    list_display = ('title', 'description')
     ordering = ('-id', )
 admin.site.register(Gallery, GalleryAdmin)
 

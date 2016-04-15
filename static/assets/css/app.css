@@ -125,9 +125,6 @@ form label.error {
 .menu-wrapper .footer .btn:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
-.menu-wrapper .footer .btn.pull-right + .btn.pull-right {
-  margin-right: 0.5rem;
-}
 .menu-wrapper .footer .fa {
   font-size: 1.5rem;
   color: #9e9e9e;
@@ -275,6 +272,12 @@ form label.error {
   font-weight: 500;
   font-size: 0.8rem;
   background: #FFF;
+}
+.gallery-activity .header .count {
+  color: #fcdee2;
+}
+.gallery-activity .gallery-wrapper {
+  margin-top: 48px;
 }
 .scroll-section {
   height: 100%;
