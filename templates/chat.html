@@ -2,6 +2,14 @@
 {% load humanize %}
 {% load staticfiles %}
 {% load customtags %}
+{% block stylesheet %}
+	<style>
+		.chat-activity {
+			background: url('{% static "assets/img/bg.jpg" %}') 50% 50% no-repeat;
+			background-size: cover;
+		}
+	</style>
+{% endblock %}
 {% block body %}
 	<div class="activity chat-activity">
 		<div class="header">

@@ -318,7 +318,7 @@ form label.error {
   background-color: #98BBD1;
 }
 .chat-activity > .header {
-  background-color: rgba(152, 187, 209, 0.9);
+  background-color: rgba(252, 222, 226, 0.9);
 }
 .chat-activity > .header .btn {
   color: inherit;
@@ -385,7 +385,7 @@ form label.error {
   display: none;
 }
 .chat-activity .talk-box .message-row.notice .message-box {
-  background: rgba(31, 45, 56, 0.1);
+  background: rgba(31, 45, 56, 0.2);
   font-size: 0.7rem;
   color: #1d2d3a;
   text-align: center;
