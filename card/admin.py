@@ -38,6 +38,6 @@ admin.site.register(Gallery, GalleryAdmin)
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('author', 'title', 'content', 'created_at')
+    list_display = ('title', 'author', 'created_at')
     ordering = ('-id', )
 admin.site.register(Article, ArticleAdmin)

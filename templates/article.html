@@ -29,6 +29,9 @@
 				<article>
 					{{ article.title }}<br/><br/>
 					{{ article.content|safe|linebreaksbr }}
+					{% if article.attach_image %}
+						<img src="{{ MEDIA_URL }}{{ article.attach_image }}" class="attach_image">
+					{% endif %}
 				</article>
 			</div>
 

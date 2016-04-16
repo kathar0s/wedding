@@ -86,7 +86,7 @@ class DefaultMessages(models.Model):
     target = models.CharField(max_length=50, default='', verbose_name=u'대상')
     message = models.TextField(default='', verbose_name=u'메세지')
 
-    user = models.ForeignKey(User, null=True, verbose_name=u'보낸 사람')
+    user = models.ForeignKey(User, null=True, verbose_name=u'보낸 사람', limit_choices_to={'is_staff': True})
 
     created_at = models.DateTimeField(verbose_name=u'생성일(순서)')
 
@@ -115,6 +115,8 @@ class Article(models.Model):
 
     is_notice = models.BooleanField(default=False, verbose_name=u'공지여부')
     is_secret = models.BooleanField(default=False, verbose_name=u'비밀글 여부')
+
+    attach_image = models.ImageField(upload_to='article/', null=True, blank=True, verbose_name=u'첨부이미지')
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=u'생성일')
 

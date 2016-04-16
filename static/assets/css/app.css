@@ -234,11 +234,11 @@ form label.error {
   font-weight: 600;
   color: #FFF;
 }
-.activity > .header .btn .fa {
-  margin-right: 0.5rem;
-}
 .activity > .header .btn:hover {
   background-color: rgba(0, 0, 0, 0.1);
+}
+.activity > .header .btn-back .fa {
+  margin-right: 0.5rem;
 }
 .activity > .content .title {
   margin-top: 48px;
@@ -272,6 +272,13 @@ form label.error {
   font-weight: 500;
   font-size: 0.8rem;
   background: #FFF;
+}
+.activity > .content article .attach_image {
+  width: 100%;
+  border: 1px solid #999;
+  overflow: hidden;
+  border-radius: 15px;
+  margin-top: 0.5rem;
 }
 .gallery-activity .header .count {
   color: #fcdee2;
