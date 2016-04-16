@@ -110,6 +110,8 @@
 				setCookie('userinfo', $(form).serialize(), 30);
 
 				location.href = '{% url "card:chat" %}';
+
+				return false;
 			},
 			rules: {
 				last_number: {

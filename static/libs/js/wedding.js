@@ -65,6 +65,10 @@ function getCookie(name) {
     return null;
 }
 
+function clearCookie( name ) {
+    setCookie(name, '', -1);
+}
+
 function deserialize(value) {
     var vars = value.split('&');
     var result = {}

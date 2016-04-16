@@ -443,7 +443,7 @@ form label.error {
   position: relative;
   box-shadow: 0 0 3px rgba(51, 51, 51, 0.8);
   z-index: 5;
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 .chat-activity .talk-box .message-row.other .message-box .message:before,
 .chat-activity .talk-box .message-row.me .message-box .message:before {
