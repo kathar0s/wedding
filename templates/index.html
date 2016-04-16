@@ -23,7 +23,7 @@
 						이름과 휴대폰 전화번호 뒷 4자리를 입력해주세요.<br/>
 						입력하신 정보는 개별 맞춤 청첩장을 제공하는데 사용됩니다.
 					</div>
-					<form class="form-horizontal" id="user-info" method="POST" action="{% url "card:chat" %}">
+					<form class="form-horizontal" id="user-info" method="POST" action="{% url 'card:chat' %}">
 						{% csrf_token %}
 						<div class="form-group">
 							<input type="text" id="name" name="name" class="form-control" placeholder="이름" required autocomplete="off">
@@ -90,7 +90,6 @@
 		});
 
 		$('input').on('focus', function(e){
-			console.log('focus');
 			setTimeout(function(){
 				$('.scroller').scrollTop($('.scroller')[0].scrollHeight);
 			}, 100);
@@ -101,6 +100,13 @@
 		$('.splash-wrapper').fadeOut();
 		$('.intro-wrapper').fadeIn();
 
+		$('#user-info').on('submit', function(e){
+			e.preventDefault();
+			console.log('submit');
+			location.href = '{% url "card:chat" %}';
+			return false;
+		})
+
 		$('#user-info').validate({
 			submitHandler: function(form) {
 				// 방문기록 체크
@@ -108,6 +114,7 @@
 
 				// 유저정보 기록
 				setCookie('userinfo', $(form).serialize(), 30);
+				console.log('validate');
 
 				location.href = '{% url "card:chat" %}';
 

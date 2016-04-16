@@ -3,6 +3,7 @@
 {% load staticfiles %}
 {% load customtags %}
 {% block stylesheet %}
+	<link type="text/css" rel="stylesheet" media="screen" href="{% static "libs/plugins/sakura/jquery-sakura.min.css" %}" />
 	<style>
 		.chat-activity {
 			background: url('{% static "assets/img/bg.jpg" %}') 50% 50% no-repeat;
@@ -196,7 +197,7 @@
 </div>
 {% endblock %}
 {% block javascript %}
-<script src="{% static "libs/countdown/jquery.countdown.js" %}"></script>
+<script src="{% static "libs/plugins/sakura/jquery-sakura.min.js" %}"></script>
 <script>
 	var name = '';
 
@@ -207,6 +208,8 @@
 
 		resizeMenuBox();
 		resizeInputBox();
+
+		$('body').sakura();
 
 		$(window).on('resize', function(e){
 			resizeInputBox();
