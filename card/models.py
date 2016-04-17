@@ -83,7 +83,7 @@ class ChatLogs(models.Model):
 
 
 class DefaultMessages(models.Model):
-    target = models.CharField(max_length=50, default='', verbose_name=u'대상')
+    target = models.CharField(max_length=50, blank=True, default='', verbose_name=u'대상')
     message = models.TextField(default='', verbose_name=u'메세지')
 
     user = models.ForeignKey(User, null=True, verbose_name=u'보낸 사람', limit_choices_to={'is_staff': True})
