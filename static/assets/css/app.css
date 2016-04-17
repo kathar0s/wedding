@@ -237,11 +237,16 @@ form label.error {
 .activity > .header .btn:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
-.activity > .header .btn-back .fa {
+.activity > .header .btn:first-child .fa {
   margin-right: 0.5rem;
 }
-.activity > .content .title {
+.activity > .content section {
+  margin-bottom: 0.5rem;
+}
+.activity > .content section:first-child {
   margin-top: 48px;
+}
+.activity > .content .title {
   padding: 0.7rem;
   background: #FFF;
 }
@@ -300,6 +305,7 @@ form label.error {
   background-color: transparent;
 }
 .scroll-section ::-webkit-scrollbar-track-piece {
+  margin-top: 48px;
   background-color: transparent;
 }
 .scroll-section ::-webkit-scrollbar-thumb:vertical {

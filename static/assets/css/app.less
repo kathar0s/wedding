@@ -293,7 +293,7 @@ form {
 			}
 		}
 
-		.btn-back {
+		.btn:first-child {
 			.fa {
 				margin-right: 0.5rem;
 			}
@@ -301,8 +301,14 @@ form {
 	}
 
 	> .content {
+		section {
+			margin-bottom: 0.5rem;
+			&:first-child {
+				margin-top: 48px;
+			}
+		}
+
 		.title {
-			margin-top: 48px;
 			padding: 0.7rem;
 			background: #FFF;
 
@@ -378,6 +384,7 @@ form {
 	}
 
 	::-webkit-scrollbar-track-piece {
+		margin-top: 48px;
 		background-color: transparent;
 	}
 
@@ -390,9 +397,9 @@ form {
 	}
 
 	::-webkit-scrollbar-thumb:horizontal {
-		width:50px;
+		width: 50px;
 		background-color: rgba(0,0,0,.004);
-		border-radius:8px;
+		border-radius: 8px;
 	}
 
 	> .scroller {

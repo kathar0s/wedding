@@ -178,8 +178,12 @@ def chat_send(request):
 
 
 def get_user(request):
-    userinfo = urlparse.unquote(request.COOKIES.get('userinfo'))
-    userinfo = dict(urlparse.parse_qsl(userinfo))
+
+    try:
+        userinfo = urlparse.unquote(request.COOKIES.get('userinfo'))
+        userinfo = dict(urlparse.parse_qsl(userinfo))
+    except AttributeError:
+        return None, False
 
     try:
         # 현재 들어온 사람에 대한 정보를 일단 불러온다. 없으면 새로 생성
@@ -222,6 +226,33 @@ def get_user(request):
             created = True
 
         return user, created
+
+
+def board(request):
+    user, created = get_user(request)
+
+    # 사용자가 판별되는 경우에만 표시
+    if user is not None:
+
+        get = request.GET.copy()
+
+        articles = Article.objects.all().order_by('id')
+
+        bride_groom = {
+            'name': u'한의주♥형정석',
+        }
+
+        template_data = {
+            'bride_groom': bride_groom,
+            'user': user,
+            'articles': articles,
+        }
+
+        return render(request, 'board.html', template_data)
+
+    # 쿠키값이 없으면 정상접속이 아니므로 첫화면으로 리다이렉트
+    else:
+        return HttpResponseRedirect(reverse("card:index"))
 
 
 def article(request):

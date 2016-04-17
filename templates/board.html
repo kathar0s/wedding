@@ -5,17 +5,15 @@
 {% block body %}
 	<div class="activity">
 		<div class="header">
-			<button class="btn btn-back">
+			<button class="btn btn-back"{% comment %} href="{% url "card:chat" %}"{% endcomment %}>
 				<i class="fa fa-angle-left"></i>
 				{{ bride_groom.name }}
-			</button>
-			<button class="btn btn-list pull-right">
-				<i class="fa fa-th-list"></i>
 			</button>
 		</div>
 		<div class="content scroll-section">
 			<div class="scroller">
-				<section>
+				{% for article in articles %}
+				<section href="{% url "card:article" %}?id={{ article.id }}">
 					<div class="title media">
 						<div class="media-left">
 							<div class="profile">
@@ -29,12 +27,10 @@
 					</div>
 					<article>
 						{{ article.title }}<br/><br/>
-						{{ article.content|safe|linebreaksbr }}
-						{% if article.attach_image %}
-							<img src="{{ MEDIA_URL }}{{ article.attach_image }}" class="attach_image">
-						{% endif %}
+						{{ article.content|safe|linebreaksbr|truncatechars:255 }}
 					</article>
 				</section>
+				{% endfor %}
 			</div>
 		</div>
 	</div>
@@ -47,17 +43,8 @@
 
 	$(document).ready(function(){
 		$('.date').prettyDate({
-			interval: 1000
-		});
-
-		$('.btn-list').on('click', function(e){
-			console.log(document.referrer);
-			// 돌아가려는데 이전단계에서 부른게 board에서 부른 경우라면 back 으로 돌아간다.
-			if (document.referrer.indexOf('board') != -1) {
-				window.history.back();
-			} else {
-				location.replace("{% url "card:board" %}");
-			}
+			interval: 1000,
+			attribute: 'title'
 		});
 	});
 </script>

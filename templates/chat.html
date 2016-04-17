@@ -74,8 +74,9 @@
 	<div class="menu-wrapper scroll-section">
 		<div class="scroller">
 			<section>
-				<div class="title">
-					안내
+				<div class="title" href="{% url "card:board" %}">
+					<i class="fa fa-angle-right pull-right"></i>
+					게시판
 				</div>
 				<hr class="divider"/>
 				<div class="content">
@@ -101,7 +102,7 @@
 							<div class="media-body">
 								<h6 class="title">{{ article.title }}</h6>
 								<div class="subscript">
-									<strong class="author">{{ article.author.name }}</strong> · <span class="date">{{ article.created_at|date:"Y년 n월 j일 a g:i" }}</span>
+									<strong class="author">{{ article.author.name }}</strong> · <span class="date" title="{{ article.created_at|date:"Y-m-d" }}T{{ article.created_at|date:"H:i:s" }}+09:00">{{ article.created_at|date:"Y년 n월 j일 a g:i" }}</span>
 								</div>
 							</div>
 						</li>
@@ -198,6 +199,8 @@
 {% endblock %}
 {% block javascript %}
 <script src="{% static "libs/plugins/sakura/jquery-sakura.min.js" %}"></script>
+<script src="{% static "libs/plugins/prettydate/jquery.prettydate.js" %}"></script>
+<script src="{% static "libs/plugins/prettydate/jquery.prettydate-kr.js" %}"></script>
 <script>
 	var name = '';
 
@@ -288,6 +291,10 @@
 		// 내용이 긴 경우 맨 아래로 스크롤 이동
 		var _chatbox = $('#chat-box');
 		_chatbox.scrollTop(_chatbox[0].scrollHeight);
+
+		$('.date').prettyDate({
+			interval: 1000
+		});
 
 {% comment %}
 		// 메세지 상자에 글이 입력되려고 하면 스크롤을 맨 아래로 이동

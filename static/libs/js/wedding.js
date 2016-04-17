@@ -2,12 +2,22 @@ $(document).ready(function(e){
 
     // Back 버튼 액션 등록
     $('.btn-back').on('click', function(e){
+        //if (document.referrer.indexOf('article') != -1) {
+        //    window.history.go(-2);
+        //} else {
         window.history.back();
+        //}
     });
 
-    $('div[href], li[href]').on('click', function(e){
+    $('[href]').on('click', function(e){
         var href = $(this).attr('href');
-        location.href = href;
+
+        if ($(this).data('method') == 'replace') {
+            location.replace(href);
+        } else {
+            location.href = href;
+        }
+
     });
 });
 
