@@ -64,10 +64,18 @@
 			{% endfor %}
 			</div>
 		</div>
-		<div class="input-box">
-			<button class="btn btn-plus"><i class="fa fa-plus"></i></button>
-			<textarea rows="1" id="message"></textarea>
-			<button class="btn btn-send" disabled>전송</button>
+		<div class="footer">
+			<div class="input-box">
+				<button class="btn btn-plus"><i class="fa fa-plus"></i></button>
+				<textarea rows="1" id="message"></textarea>
+				<button class="btn btn-send" disabled>전송</button>
+			</div>
+			<div class="plus-area">
+				<div class="item">
+					<i class="btn-gift"></i><br/>
+					위시리스트
+				</div>
+			</div>
 		</div>
 	</div>
 	<!-- 사이드 메뉴 영역 -->
@@ -285,6 +293,45 @@
 		$('.btn-send').on('click', function(){
 			sendMessage();
 		});
+
+		$('.talk-box, .header').on('click', function(e){
+			$('#message').trigger('focus');
+		});
+
+		$('#message').on('focus', function(e){
+			$('.plus-area').hide();
+			$('.btn-plus').removeClass('active');
+			adjustChatBox();
+		});
+
+		$('.btn-plus').on('click', function(e){
+
+			if ($(this).hasClass('active')) {
+				$('.plus-area').hide();
+				$('.btn-plus').removeClass('active');
+			} else {
+				$('.plus-area').show();
+				$('.btn-plus').addClass('active');
+			}
+			adjustChatBox();
+		});
+
+		$('.plus-area .item').on('click', function(e){
+			alert('준비중입니다');
+		})
+	}
+
+	function adjustChatBox() {
+		var _message = $('.activity .footer');
+		var height = _message.outerHeight();            // 메세지의 크기를 가져온다.
+		var _chatbox = $('#chat-box');
+		var diff = $('.activity .plus-area').outerHeight();   // 메세지 크기와 현재 입력창의 크기 변화
+
+		resizeTalkBox();
+
+		if (_chatbox.scrollTop() + _chatbox.height() + diff == _chatbox[0].scrollHeight) {
+			_chatbox.scrollTop(_chatbox[0].scrollHeight);
+		}
 	}
 
 	function initChatBox(){
@@ -432,9 +479,9 @@
 		var height = _message.outerHeight();            // 메세지의 크기를 가져온다.
 		var width = $(window).outerWidth();
 		var _chatbox = $('#chat-box');
-		var diff = height - $('.input-box').height();   // 메세지 크기와 현재 입력창의 크기 변화
+		var diff = height - $('.activity .footer').height();   // 메세지 크기와 현재 입력창의 크기 변화
 
-		$('.input-box').height(height);                 // 입력창을 메세지 크기만큼 늘려준다.
+		$('.activity .input-box').height(height);                 // 입력창을 메세지 크기만큼 늘려준다.
 		$('.btn-plus').outerHeight(height);
 
 		resizeTalkBox();
@@ -450,7 +497,7 @@
 	// 채팅공간 조정
 	function resizeTalkBox(){
 		var height = $(window).height();                    // 윈도우크기
-		var input_height = $("#message").outerHeight();
+		var input_height = $(".activity .footer").outerHeight();
 
 {#		$('.scroller').height(height);#}
 {#		var title_height = $(".chat-activity .title").outerHeight();#}

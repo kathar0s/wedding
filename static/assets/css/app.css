@@ -224,7 +224,7 @@ form label.error {
   top: 0;
   left: 0;
   z-index: 1000;
-  border-bottom: 1px solid #88a8bd;
+  border-bottom: 1px solid #b79f9f;
   width: 100%;
 }
 .activity > .header .btn {
@@ -512,15 +512,18 @@ form label.error {
 .chat-activity .dummy-bottom {
   height: 58px;
 }
-.chat-activity .input-box {
-  background: #d1d1d1;
-  height: 48px;
+.chat-activity .footer {
   position: fixed;
+  background: #d1d1d1;
   bottom: 0;
   z-index: 1000;
   width: 100%;
 }
-.chat-activity .input-box .btn-plus {
+.chat-activity .footer .input-box {
+  position: relative;
+  height: 48px;
+}
+.chat-activity .footer .btn-plus {
   width: 48px;
   height: 48px;
   border: 0;
@@ -529,8 +532,20 @@ form label.error {
   background-color: #d1d1d1;
   position: absolute;
   bottom: 0;
+  font-size: 1.4rem;
+  padding: 0.5rem;
 }
-.chat-activity .input-box textarea {
+.chat-activity .footer .fa {
+  transition: 0.5s;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -ms-transition: 0.5s;
+  -o-transition: 0.5s;
+}
+.chat-activity .footer .active .fa-plus {
+  transform: rotate(45deg);
+}
+.chat-activity .footer textarea {
   height: 48px;
   max-height: 95px;
   width: 100%;
@@ -542,18 +557,35 @@ form label.error {
   outline: 0;
   overflow: hidden;
 }
-.chat-activity .input-box .btn-send {
+.chat-activity .footer .btn-send {
   position: absolute;
   bottom: 5px;
   right: 5px;
   background: #fcdee2;
 }
-.chat-activity .input-box .btn-send:hover,
-.chat-activity .input-box .btn-send:active {
+.chat-activity .footer .btn-send:hover,
+.chat-activity .footer .btn-send:active {
   background-color: #efd420;
 }
-.chat-activity .input-box .btn-send[disabled] {
+.chat-activity .footer .btn-send[disabled] {
   background: #d1d1d1;
+}
+.chat-activity .footer .plus-area {
+  padding: 1rem;
+  background: #F2F2F2;
+  display: none;
+}
+.chat-activity .footer .plus-area .item {
+  display: inline-block;
+}
+.chat-activity .footer .plus-area .btn-gift {
+  width: 75px;
+  height: 75px;
+  background: url('/s/assets/img/btn_chat_gift_n.png') no-repeat;
+  display: inline-block;
+}
+.chat-activity .footer .plus-area .btn-gift:hover {
+  background-image: url('/s/assets/img/btn_chat_gift_p.png');
 }
 .splash-wrapper {
   position: absolute;

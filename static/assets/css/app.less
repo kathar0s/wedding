@@ -276,7 +276,7 @@ form {
 		top: 0;
 		left: 0;
 		z-index: 1000;
-		border-bottom: 1px solid #88a8bd;
+		border-bottom: 1px solid #b79f9f;
 
 		width: 100%;
 
@@ -638,13 +638,18 @@ form {
 		height: 58px;
 	}
 
-	.input-box {
-		background: #d1d1d1;
-		height: 48px;
+	.footer {
 		position: fixed;
+		background: #d1d1d1;
+		//height: 48px;
 		bottom: 0;
 		z-index: 1000;
 		width: 100%;
+
+		.input-box {
+			position: relative;
+			height: 48px;
+		}
 
 		.btn-plus {
 			width: 48px;
@@ -655,7 +660,22 @@ form {
 			background-color: #d1d1d1;
 			position: absolute;
 			bottom: 0;
+			font-size: 1.4rem;
+    		padding: 0.5rem;
+		}
 
+		.fa {
+			transition: 0.5s;
+			-webkit-transition: 0.5s;
+			-moz-transition: 0.5s;
+			-ms-transition: 0.5s;
+			-o-transition: 0.5s;
+		}
+
+		.active {
+			.fa-plus {
+				transform: rotate(45deg);
+			}
 		}
 
 		textarea {
@@ -684,6 +704,27 @@ form {
 
 			&[disabled] {
 				background: #d1d1d1;
+			}
+		}
+
+		.plus-area {
+			padding: 1rem;
+			background: #F2F2F2;
+			display: none;
+
+			.item {
+				display: inline-block;
+			}
+
+			.btn-gift {
+				width: 75px;
+				height: 75px;
+				background: url('/s/assets/img/btn_chat_gift_n.png') no-repeat;
+				display: inline-block;
+
+				&:hover {
+					background-image: url('/s/assets/img/btn_chat_gift_p.png');
+				}
 			}
 		}
 	}
