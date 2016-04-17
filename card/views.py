@@ -90,40 +90,48 @@ def chat_bot(request):
         if post['rcode'] == 'greeting':
             # 해당 유저에게 특화된 메세지가 있는지 확인하고 없으면 기본 메세지를 보여준다.
             user, created = get_user(request)
-            default_messages = DefaultMessages.objects.filter(target=user.name+user.last_number).order_by('created_at')
 
-            # 해당 유저에게 특화된 메세지가 없는 경우 Default 값을 불러온다.
-            if len(default_messages) == 0:
-                default_messages = DefaultMessages.objects.filter(target='').order_by('created_at')
+            # 해당 유저 채팅방에 메세지가 하나도 없는지 확인한다.
+            chatroom = ChatRooms.objects.get(owner=user)
 
-            # 초기 초대 참여 공지 추가 (초기 메세지이므로 처음에 삽입한다.)
-            chatlog = ChatLogs(user=user, message='')
-            chatlog.chatroom_id = post['chatroom']
-            chatlog.type = 'notice'
-            chatlog.save()
+            chatlogs = chatroom.chatlogs_set.count()
 
-            chatlog.message = u'<strong>%s</strong>님이 <strong>%s</strong>을 초대했습니다.' % (default_messages[0].user.name, user.name)
-            chatlog.save()
+            if chatlogs == 0:
 
-            messages = []
-            for default_message in default_messages:
-                messages.append({
-                    'message': default_message.message,
-                    'name': default_message.user.name,
-                    'profile': default_message.user.profile
-                })
+                default_messages = DefaultMessages.objects.filter(target=user.name+user.last_number).order_by('created_at')
 
-                chatlog = ChatLogs(user=default_message.user, message=default_message.message)
+                # 해당 유저에게 특화된 메세지가 없는 경우 Default 값을 불러온다.
+                if len(default_messages) == 0:
+                    default_messages = DefaultMessages.objects.filter(target='').order_by('created_at')
+
+                # 초기 초대 참여 공지 추가 (초기 메세지이므로 처음에 삽입한다.)
+                chatlog = ChatLogs(user=user, message='')
                 chatlog.chatroom_id = post['chatroom']
-                chatlog.type = 'other'
+                chatlog.type = 'notice'
                 chatlog.save()
 
-            data['error'] = False
-            data['code'] = 200
-            data['message'] = u'초기 인사말 불러오기 완료'
-            data['response'] = {
-                'messages': messages
-            }
+                chatlog.message = u'<strong>%s</strong>님이 <strong>%s</strong>을 초대했습니다.' % (default_messages[0].user.name, user.name)
+                chatlog.save()
+
+                messages = []
+                for default_message in default_messages:
+                    messages.append({
+                        'message': default_message.message,
+                        'name': default_message.user.name,
+                        'profile': default_message.user.profile
+                    })
+
+                    chatlog = ChatLogs(user=default_message.user, message=default_message.message)
+                    chatlog.chatroom_id = post['chatroom']
+                    chatlog.type = 'other'
+                    chatlog.save()
+
+                data['error'] = False
+                data['code'] = 200
+                data['message'] = u'초기 인사말 불러오기 완료'
+                data['response'] = {
+                    'messages': messages
+                }
         else:
             data['response'] = {
                 'message': u'잘못된 코드를 입력하셨습니다.',
