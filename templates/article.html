@@ -51,7 +51,6 @@
 		});
 
 		$('.btn-list').on('click', function(e){
-			console.log(document.referrer);
 			// 돌아가려는데 이전단계에서 부른게 board에서 부른 경우라면 back 으로 돌아간다.
 			if (document.referrer.indexOf('board') != -1) {
 				window.history.back();
