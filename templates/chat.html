@@ -295,7 +295,9 @@
 		});
 
 		$('.talk-box, .header').on('click', function(e){
-			$('#message').trigger('focus');
+			$('.plus-area').hide();
+			$('.btn-plus').removeClass('active');
+			adjustChatBox();
 		});
 
 		$('#message').on('focus', function(e){
