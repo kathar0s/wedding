@@ -27,7 +27,8 @@ admin.site.register(ChatRooms, ChatRoomsAdmin)
 
 class DefaultMessagesAdmin(admin.ModelAdmin):
     list_display = ('message', 'target', 'created_at')
-    ordering = ('-id', )
+    ordering = ('-created_at', )
+    search_fields = ['target', ]
 admin.site.register(DefaultMessages, DefaultMessagesAdmin)
 
 
