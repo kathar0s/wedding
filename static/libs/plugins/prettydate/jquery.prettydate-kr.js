@@ -6,6 +6,7 @@ $.extend($.prettyDate.messages, {
     hour: '1시간전',
     hours: $.prettyDate.template('{0}시간전'),
     yesterday: '어제',
+	dayBeforeYesterday: '이틀전',
 	days: $.prettyDate.template('{0}일전'),
 	week: '1주전',
 	weeks: $.prettyDate.template('{0}주전'),
