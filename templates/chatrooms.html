@@ -29,7 +29,7 @@
 								{{ chatroom.owner.name }}_{{ chatroom.owner.last_number }}
 							</div>
 							<div class="message">
-								{{ chatroom.chatlogs_set.all.last.message }}
+								{{ chatroom.chatlogs_set.all.last.message|truncatechars:100 }}
 							</div>
 						</div>
 					</div>
