@@ -452,7 +452,8 @@
 	        },
 			function(data) {
 				if (!data.error) {
-					showMessage('me', message, '{{ user.name }}', '', _created_at);
+					showMessage('{% if chatroom.owner.id == user.id %}me{% else %}other{% endif %}',
+							message, '{{ user.name }}', '', _created_at);
 					// 맨 아래로 위치시키기
 					setTimeout(function() {
 						_scroller.scrollTop(_scroller[0].scrollHeight);
