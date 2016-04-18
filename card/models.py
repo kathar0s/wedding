@@ -9,7 +9,7 @@ class User(models.Model):
     name = models.CharField(max_length=50, default='', verbose_name=u'이름')
     last_number = models.CharField(max_length=4, blank=True, default='', verbose_name=u'전화번호 뒷 4자리')
     is_staff = models.BooleanField(default=False, verbose_name=u'관리자 여부')
-    profile = models.CharField(max_length=255, default='', verbose_name=u'프로필 사진 경로')
+    profile = models.CharField(max_length=255, default='', blank=True, verbose_name=u'프로필 사진 경로')
 
     is_invited = models.BooleanField(default=False, verbose_name=u'초대된 여부')
 
