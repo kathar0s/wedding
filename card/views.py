@@ -8,6 +8,7 @@ from django.db import transaction
 from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
+from django.utils import timezone
 
 # Create your views here.
 from models import User, ChatRooms, ChatLogs, DefaultMessages, Gallery, Article
@@ -234,6 +235,9 @@ def get_user(request):
                     user = User.objects.create(name=userinfo['name'], last_number=userinfo['last_number'])
                     created = True
 
+            user.last_login_at = timezone.now()
+            user.save()
+
         return user, created
     except ValueError:
         return None, False
@@ -251,6 +255,9 @@ def get_user(request):
             user = User.objects.filter(name=userinfo['name']).exclude(last_number__iregex=r'^.{1,}$')
             user = user[0]
             created = True
+
+        user.last_login_at = timezone.now()
+        user.save()
 
         return user, created
 
