@@ -48,7 +48,7 @@
 								{% if chatlog.type == 'me' %}
 									{{ chatlog.message|linebreaksbr }}
 								{% else %}
-									{{ chatlog.message|linebreaksbr|safe }}
+									{{ chatlog.message|safe|linebreaksbr }}
 								{% endif %}
 							</span>
 							<div class='extra'>
