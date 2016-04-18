@@ -348,6 +348,15 @@ form label.error {
   margin-top: 10px;
   padding: 0 0.5rem;
 }
+.chat-activity .talk-box .message-row.other.seperate .message:before {
+  display: block !important;
+}
+.chat-activity .talk-box .message-row.other.seperate .profile {
+  display: block !important;
+}
+.chat-activity .talk-box .message-row.other.seperate .name {
+  display: block !important;
+}
 .chat-activity .talk-box .message-row.other .profile {
   float: left;
   margin-right: 2px;

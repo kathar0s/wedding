@@ -5,6 +5,7 @@ from datetime import datetime
 import pytz
 from django.core.urlresolvers import reverse
 from django.db import transaction
+from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 
@@ -25,27 +26,33 @@ def chat(request):
     user, created = get_user(request)
 
     if user is not None:
-        # 현재 들어온 사람에 대한 정보를 일단 불러온다. 없으면 새로 생성
 
-        hjs = User.objects.get(name=u'형정석', last_number=u'2857')
-        hej = User.objects.get(name=u'한의주', last_number=u'9911')
-        hej_hjs = User.objects.get(name=u'한의주♥형정석', last_number=u'0104')
+        get = request.GET.copy()
 
-        members = [hjs, hej, hej_hjs]
-
-        # 구성원에서 자기 자신은 제외한다.
-        if user in members:
-            members.remove(user)
-
-        # 해당 User가 가지고 있는 방을 가져온다. 없으면 생성
-        chatrooms = ChatRooms.objects.filter(owner=user, members=','.join([str(m.id) for m in members]))
-
-        if len(chatrooms) > 0:
-            # 사실 지금은 방이 하나만 있어야하는데 여러개 있으면 문제가 있는것.
-            chatroom = chatrooms[0]
+        if 'id' in get:
+            chatroom = ChatRooms.objects.get(id=get['id'])
         else:
-            chatroom = ChatRooms.objects.create(owner=user, members=','.join([str(m.id) for m in members]),
-                                                title=u','.join([unicode(m.name) for m in members]))
+
+            # 현재 들어온 사람에 대한 정보를 일단 불러온다. 없으면 새로 생성
+            hjs = User.objects.get(name=u'형정석', last_number=u'2857')
+            hej = User.objects.get(name=u'한의주', last_number=u'9911')
+            hej_hjs = User.objects.get(name=u'한의주♥형정석', last_number=u'0104')
+
+            members = [hjs, hej, hej_hjs]
+
+            # 구성원에서 자기 자신은 제외한다.
+            if user in members:
+                members.remove(user)
+
+            # 해당 User가 가지고 있는 방을 가져온다. 없으면 생성
+            chatrooms = ChatRooms.objects.filter(owner=user, members=','.join([str(m.id) for m in members]))
+
+            if len(chatrooms) > 0:
+                # 사실 지금은 방이 하나만 있어야하는데 여러개 있으면 문제가 있는것.
+                chatroom = chatrooms[0]
+            else:
+                chatroom = ChatRooms.objects.create(owner=user, members=','.join([str(m.id) for m in members]),
+                                                    title=u','.join([unicode(m.name) for m in members]))
 
         chatlogs = chatroom.chatlogs_set.all().order_by('created_at')
 
@@ -165,16 +172,28 @@ def chat_send(request):
 
             # 요청한 채팅방 주인인지 확인
             # 메세지 길이가 공백제거한 후 1글자라도 있어야 된다.
-            if user.id == chatroom.owner.id and len(message.strip()) != 0:
-                chatlog = ChatLogs(user=user, message=message)
-                chatlog.chatroom_id = post['chatroom']
-                chatlog.type = 'me'
-                chatlog.unread_count = 1
-                chatlog.save()
+            if len(message.strip()) != 0:
 
-                data['error'] = False
-                data['code'] = 200
-                data['message'] = u'메세지 저장 완료'
+                if user.id == chatroom.owner.id:
+                    chatlog = ChatLogs(user=user, message=message)
+                    chatlog.chatroom_id = post['chatroom']
+                    chatlog.type = 'me'
+                    chatlog.unread_count = 1
+                    chatlog.save()
+
+                    data['error'] = False
+                    data['code'] = 200
+                    data['message'] = u'메세지 저장 완료'
+                else:
+                    chatlog = ChatLogs(user=user, message=message)
+                    chatlog.chatroom_id = post['chatroom']
+                    chatlog.type = 'other'
+                    chatlog.unread_count = 1
+                    chatlog.save()
+
+                    data['error'] = False
+                    data['code'] = 200
+                    data['message'] = u'메세지 저장 완료'
             else:
                 data['message'] = u'메세지 저장 실패'
 
@@ -195,6 +214,8 @@ def get_user(request):
     try:
         # 현재 들어온 사람에 대한 정보를 일단 불러온다. 없으면 새로 생성
         user, created = User.objects.get_or_create(name=userinfo['name'])
+
+        User.objects.get(name=userinfo['name'])
 
         # 새로 생기는 경우라면 번호를 입력해준다.
         if created:
@@ -312,6 +333,33 @@ def album(request):
         }
 
         return render(request, 'album.html', template_data)
+
+    # 쿠키값이 없으면 정상접속이 아니므로 첫화면으로 리다이렉트
+    else:
+        return HttpResponseRedirect(reverse("card:index"))
+
+
+def chatroom(request):
+    user, created = get_user(request)
+
+    # 사용자가 판별되는 경우에만 표시
+    if user is not None:
+
+        get = request.GET.copy()
+
+        chatrooms = ChatRooms.objects.filter(Q(members__icontains=user.id) |
+                                             Q(owner__id=user.id))
+        bride_groom = {
+            'name': u'한의주♥형정석',
+        }
+
+        template_data = {
+            'bride_groom': bride_groom,
+            'user': user,
+            'chatrooms': chatrooms,
+        }
+
+        return render(request, 'chatrooms.html', template_data)
 
     # 쿠키값이 없으면 정상접속이 아니므로 첫화면으로 리다이렉트
     else:

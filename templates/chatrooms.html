@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load staticfiles %}
+{% load customtags %}
+{% block body %}
+	<div class="activity">
+		<div class="header">
+			<button class="btn btn-back"{% comment %} href="{% url "card:chat" %}"{% endcomment %}>
+				<i class="fa fa-angle-left"></i>
+				{{ bride_groom.name }}
+			</button>
+		</div>
+		<div class="content scroll-section">
+			<div class="scroller">
+				{% for chatroom in chatrooms %}
+				<section href="{% url "card:chat" %}?id={{ chatroom.id }}">
+					<div class="title media">
+						<div class="media-left">
+							<div class="profile">
+								<img src="{% static "assets/img/profile/thm_general_default_profile_image.png" %}">
+							</div>
+						</div>
+						<div class="media-body">
+{#							<div class="date pull-right" title="{{ chatroom.|date:"Y-m-d" }}T{{ article.created_at|date:"H:i:s" }}+09:00">{{ article.created_at|date:"Y년 n월 j일 a g:i" }}</div>#}
+							<div class="name">{% for name in chatroom.members_names %}{{ name }}{% if not forloop.last %},{% endif %}{% endfor %}</div>
+							<div class="message">
+								{{ chatroom.chatlogs_set.all.last.message }}
+							</div>
+						</div>
+					</div>
+				</section>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block javascript %}
+<script src="{% static "libs/plugins/prettydate/jquery.prettydate.js" %}"></script>
+<script src="{% static "libs/plugins/prettydate/jquery.prettydate-kr.js" %}"></script>
+<script>
+	var name = '';
+
+	$(document).ready(function(){
+		$('.date').prettyDate({
+			interval: 1000,
+			attribute: 'title'
+		});
+	});
+</script>
+<script type="text/jsx">
+	// React Code Goes Here
+</script>
+{% endblock %}

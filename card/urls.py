@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^board/$', views.board, name='board'),
     url(r'^article/$', views.article, name='article'),
     url(r'^album/$', views.album, name='album'),
+    url(r'^chatroom/$', views.chatroom, name='chatroom'),
 ]
