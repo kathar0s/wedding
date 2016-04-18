@@ -21,8 +21,13 @@
 							</div>
 						</div>
 						<div class="media-body">
-{#							<div class="date pull-right" title="{{ chatroom.|date:"Y-m-d" }}T{{ article.created_at|date:"H:i:s" }}+09:00">{{ article.created_at|date:"Y년 n월 j일 a g:i" }}</div>#}
-							<div class="name">{% for name in chatroom.members_names %}{{ name }}{% if not forloop.last %},{% endif %}{% endfor %}</div>
+							<div class="date pull-right" style="margin-top: 0.4rem;" title="{{ chatroom.chatlogs_set.all.last.created_at|date:"Y-m-d" }}T{{ chatroom.chatlogs_set.all.last.created_at|date:"H:i:s" }}+09:00">
+								{{ chatroom.chatlogs_set.all.last.created_at|date:"Y년 n월 j일 a g:i" }}
+							</div>
+							<div class="name">
+{#								{% for name in chatroom.members_names %}{{ name }}{% if not forloop.last %},{% endif %}{% endfor %}#}
+								{{ chatroom.owner.name }}_{{ chatroom.owner.last_number }}
+							</div>
 							<div class="message">
 								{{ chatroom.chatlogs_set.all.last.message }}
 							</div>
