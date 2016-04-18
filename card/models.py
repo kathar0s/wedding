@@ -32,7 +32,7 @@ class ChatRooms(models.Model):
     members = models.TextField(default='', verbose_name=u'구성원')
     # last_log = models.ForeignKey(ChatLogs, verbose_name=u'최근 메세지 아이디')
     # last_message = models.TextField(default='', verbose_name=u'최근 메세지')
-    # last_updated_at = models.DateTimeField(verbose_name=u'최근 업데이트 시간')
+    last_updated_at = models.DateTimeField(null=True, verbose_name=u'최근 업데이트 시간')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=u'생성시간')
 
     @property
@@ -73,6 +73,9 @@ class ChatLogs(models.Model):
 
     def save(self, *args, **kwargs):
         super(ChatLogs, self).save(*args, **kwargs)
+
+        self.chatroom.last_updated_at = self.created_at
+        self.chatroom.save()
 
     def __unicode__(self):
         return u"[%s] - %s" % (self.id, self.chatroom)

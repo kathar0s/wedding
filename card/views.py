@@ -348,7 +348,7 @@ def chatroom(request):
         get = request.GET.copy()
 
         chatrooms = ChatRooms.objects.filter(Q(members__icontains=user.id) |
-                                             Q(owner__id=user.id))
+                                             Q(owner__id=user.id)).order_by('last_updated_at')
         bride_groom = {
             'name': u'한의주♥형정석',
         }

@@ -46,9 +46,9 @@
 						<div class='message' data-timestamp="{% widthratio chatlog.created_at|date:"U" 1 1000 %}">
 							<span class="text">
 								{% if chatlog.type == 'me' %}
-									{{ chatlog.message }}
+									{{ chatlog.message|linebreaksbr }}
 								{% else %}
-									{{ chatlog.message|safe }}
+									{{ chatlog.message|linebreaksbr|safe }}
 								{% endif %}
 							</span>
 							<div class='extra'>
