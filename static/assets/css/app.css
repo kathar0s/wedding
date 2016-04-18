@@ -275,8 +275,8 @@ form label.error {
 .activity > .content article {
   padding: 0.7rem;
   color: #444;
-  font-weight: 500;
-  font-size: 0.8rem;
+  font-weight: 300;
+  font-size: 1rem;
   background: #FFF;
 }
 .activity > .content article .attach_image {
