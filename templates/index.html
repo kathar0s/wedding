@@ -107,7 +107,6 @@
 
 				// 유저정보 기록
 				setCookie('userinfo', $(form).serialize(), 30);
-				console.log('validate');
 
 				location.href = '{% url "card:chat" %}';
 

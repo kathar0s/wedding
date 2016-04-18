@@ -109,14 +109,15 @@ def chat_bot(request):
             if len(default_messages) == 0:
                 default_messages = DefaultMessages.objects.filter(target='').order_by('created_at')
 
-            # 초기 초대 참여 공지 추가 (초기 메세지이므로 처음에 삽입한다.)
-            chatlog = ChatLogs(user=user, message='')
-            chatlog.chatroom_id = post['chatroom']
-            chatlog.type = 'notice'
-            chatlog.save()
+            if chatlogs == 0:
+                # 초기 초대 참여 공지 추가 (초기 메세지이므로 처음에 삽입한다.)
+                chatlog = ChatLogs(user=user, message='')
+                chatlog.chatroom_id = post['chatroom']
+                chatlog.type = 'notice'
+                chatlog.save()
 
-            chatlog.message = u'<strong>%s</strong>님이 <strong>%s</strong>을 초대했습니다.' % (default_messages[0].user.name, user.name)
-            chatlog.save()
+                chatlog.message = u'<strong>%s</strong>님이 <strong>%s</strong>을 초대했습니다.' % (default_messages[0].user.name, user.name)
+                chatlog.save()
 
             messages = []
             for default_message in default_messages:
