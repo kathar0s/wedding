@@ -12,10 +12,12 @@ $(document).ready(function(e){
     $('[href]').on('click', function(e){
         var href = $(this).attr('href');
 
-        if ($(this).data('method') == 'replace') {
-            location.replace(href);
-        } else {
-            location.href = href;
+        if ($(this)[0].tagName != 'A') {
+            if ($(this).data('method') == 'replace') {
+                location.replace(href);
+            } else {
+                location.href = href;
+            }
         }
 
     });

@@ -30,7 +30,6 @@
 			position: relative;
 			width: 100%;
 			padding-bottom : 100%; /* = width for a 1:1 aspect ratio */
-			margin:1.66%;
 			background-position:center center;
 			background-repeat:no-repeat;
 			background-size:cover; /* you change this to "contain" if you don't want the images to be cropped */
@@ -44,9 +43,6 @@
 				<i class="fa fa-angle-left"></i>
 				앨범 <span class="count">{{ photos|length }}</span>
 			</button>
-{#			<button class="btn btn-menu pull-right">#}
-{#				<i class="fa fa-bars"></i>#}
-{#			</button>#}
 		</div>
 		<div class="content scroll-section">
 			<div class="scroller">
@@ -56,7 +52,7 @@
 						<figure>
 							<a href="{{ MEDIA_URL }}{{ photo.path }}" itemprop="contentUrl" data-size="{{ photo.path.width }}x{{ photo.path.height }}">
 {#								<img src="{{ MEDIA_URL }}{{ photo.path }}" itemprop="thumbnail" alt="Image description" />#}
-								<img class="square" style="background-image:url('{{ MEDIA_URL }}{{ photo.path }}')"></img>
+								<img class="square" style="background-image:url('{{ MEDIA_URL }}{{ photo.path }}')">
 							</a>
 							<figcaption>{{ photo.description }}</figcaption>
 						</figure>
@@ -139,6 +135,8 @@
 <script>
 
 	$(document).ready(function(){
+		// execute above function
+		initPhotoSwipeFromDOM('.my-gallery');
 	});
 
 	var initPhotoSwipeFromDOM = function(gallerySelector) {
@@ -325,7 +323,6 @@
 			}
 
 			options.shareEl = false;
-			options.history = false;
 
 			// Pass data to PhotoSwipe and initialize it
 			gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
@@ -348,11 +345,5 @@
 			openPhotoSwipe( hashData.pid ,  galleryElements[ hashData.gid - 1 ], true, true );
 		}
 	};
-
-	// execute above function
-	initPhotoSwipeFromDOM('.my-gallery');
-</script>
-<script type="text/jsx">
-	// React Code Goes Here
 </script>
 {% endblock %}
