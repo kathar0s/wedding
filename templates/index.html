@@ -100,13 +100,6 @@
 		$('.splash-wrapper').fadeOut();
 		$('.intro-wrapper').fadeIn();
 
-		$('#user-info').on('submit', function(e){
-			e.preventDefault();
-			console.log('submit');
-			location.href = '{% url "card:chat" %}';
-			return false;
-		})
-
 		$('#user-info').validate({
 			submitHandler: function(form) {
 				// 방문기록 체크
