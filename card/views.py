@@ -57,7 +57,7 @@ def chat(request):
         chatlogs = chatroom.chatlogs_set.all().order_by('created_at')
 
         gallery = Gallery.objects.all().order_by('id')[:4]
-        articles = Article.objects.all().order_by('id')[:4]
+        articles = Article.objects.all().order_by('id')[:5]
 
         bride_groom = {
             'name': u'한의주♥형정석',
@@ -215,8 +215,6 @@ def get_user(request):
     try:
         # 현재 들어온 사람에 대한 정보를 일단 불러온다. 없으면 새로 생성
         user, created = User.objects.get_or_create(name=userinfo['name'])
-
-        User.objects.get(name=userinfo['name'])
 
         # 새로 생기는 경우라면 번호를 입력해준다.
         if created:
