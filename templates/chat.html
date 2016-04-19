@@ -393,6 +393,7 @@
 
 	function showMessage(type, message, name, profile, timestamp) {
 		timestamp = timestamp || Date.now();
+		profile = profile || 'hej_hjs.png';
 		var template = $('#tmpl-message').clone().removeAttr("id").addClass(type);
 		var template_timeline = $('#tmpl-timeline').clone().removeAttr("id");
 
@@ -422,7 +423,7 @@
 			}
 
 			// 메세지 추가
-			template.find('.profile img').attr('src', '{% static "assets/img/profile/hej_hjs.png" %}');
+			template.find('.profile img').attr('src', '{% static "assets/img/profile/" %}' + profile);
 			template.find('.name').text(name);
 			template.find('.text').html(message.replace(/\n/g, "<br />"));
 			template.find('.badge').text(1);
@@ -453,7 +454,7 @@
 			function(data) {
 				if (!data.error) {
 					showMessage('{% if chatroom.owner.id == user.id %}me{% else %}other{% endif %}',
-							message, '{{ user.name }}', '', _created_at);
+							message, '{{ user.name }}', {% if user.profile %}'{{ user.profile }}'{% else %}null{% endif %}, _created_at);
 					// 맨 아래로 위치시키기
 					setTimeout(function() {
 						_scroller.scrollTop(_scroller[0].scrollHeight);
