@@ -245,7 +245,7 @@ form label.error {
   color: white;
   position: absolute;
   left: 15px;
-  top: 15px;
+  top: 5px;
 }
 .profile-wrapper .profile-bg-wrapper .profile-bg-overlay .profile-message {
   color: white;
