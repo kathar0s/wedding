@@ -148,7 +148,7 @@
 				</div>
 				<hr class="divider"/>
 				<div class="content">
-					<ul class="list-unstyled members">
+					<ul class="list-unstyled members" id="chat-members">
 						<li class="media article">
 							<div class="media-left">
 								<div class="profile">
@@ -183,6 +183,26 @@
 {#			<button class="btn pull-right">#}
 {#				<i class="fa fa-facebook"></i>#}
 {#			</button>#}
+		</div>
+	</div>
+	<!-- 프로필 -->
+	<div class="profile-wrapper hide" id="profile">
+		<div class="profile-bg-wrapper">
+			<div class="profile-bg-overlay">
+				<div class="profile-close">
+					<i class="fa fa-times"></i>
+				</div>
+				<div class="profile-message">
+					<span class="text">하나님 중심</span>
+				</div>
+			</div>
+			<div class="profile-bg" style="background-image:url('/m/gallery/LEFTEYE_001.jpg');"></div>
+		</div>
+		<div class="profile-content">
+			<div class="profile-image">
+				<img src="{% static "assets/img/profile/hjs.png" %}">
+			</div>
+			<div class="profile-name"></div>
 		</div>
 	</div>
 {% endblock %}
@@ -262,6 +282,33 @@
 				location.href = '{% url "card:index" %}';
 			}
 {#				$('.overlay').trigger('click');#}
+		});
+
+		$('#chat-members li').on('click', function(e){
+			history.pushState('', "profile", "#profile");
+
+			var image = $(this).find('img').prop('src');
+			var name = $(this).find('.name').text();
+			$('#profile').removeClass('hide').addClass('active');
+			$('#profile .profile-image img').prop('src', image);
+			$('#profile .profile-name').text(name);
+		});
+
+		$('.profile-close').on('click', function(e){
+			history.back();
+			$('#profile').removeClass('active');
+		});
+
+		$(window).on('keydown', function(e){
+			if(e.keyCode === 27) {
+				$('.profile-close').trigger('click');
+			}
+		});
+
+		$(window).on('popstate', function(e){
+			if ($('#profile').hasClass('active')) {
+				$('#profile').removeClass('active');
+			}
 		});
 	}
 
@@ -357,6 +404,14 @@
 			}, 300);
 		});
 {% endcomment %}
+
+		$('.profile-wrapper').on($.support.transition.end, function() {
+			var _opacity = $(this).css('opacity');
+
+			if (_opacity == 0) {
+				$(this).addClass('hide');
+			}
+        });
 
 		{% if chatlogs|length == 0 %}
 		// 아무것도 없는 경우 초기화 세팅

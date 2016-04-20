@@ -261,6 +261,160 @@ form {
 
 }
 
+.profile-wrapper {
+	position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+	z-index: 10000;
+	opacity: 0;
+
+	transition: .3s ease;
+	-webkit-transition: .3s ease;
+	-moz-transition: .3s ease;
+	-ms-transition: .3s ease;
+	-o-transition: .3s ease;
+
+	.profile-bg-wrapper {
+		position: absolute;
+		top: 0;
+		bottom: 40%;
+		left: 0;
+		right: 0;
+
+		.profile-bg-overlay {
+			position: absolute;
+			z-index: 10001;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background: rgba(0, 0, 0, 0.5);
+
+			.profile-close {
+				font-size: 30px;
+				color: white;
+				position: absolute;
+				left: 15px;
+				top: 15px;
+			}
+
+			.profile-message {
+				color: white;
+				text-align: center;
+				margin-top: 140px;
+				font-size: 25px;
+				padding: 0 40px;
+				position: relative;
+
+				&:before {
+					position: absolute;
+					height: 1px;
+					background: #FFF;
+					top: -15px;
+					left: 0;
+					right: 0;
+					display: block;
+					content: '';
+					width: 30px;
+					margin: 0 auto;
+				}
+			}
+		}
+
+		.profile-bg {
+			position: absolute;
+			z-index: 0;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background-size: cover;
+			background-position: 50% 50%;
+			background-repeat: no-repeat;
+
+			opacity: 0;
+
+			-webkit-animation: fadeOut .3s ease both;
+			animation: fadeOut .3s ease both;
+		}
+	}
+
+	.profile-content {
+		background: #FFF;
+		position: absolute;
+		top: 130%;
+		bottom: 0;
+		width: 100%;
+		z-index: 10005;
+
+		transition: .3s ease;
+		-webkit-transition: .3s ease;
+		-moz-transition: .3s ease;
+		-ms-transition: .3s ease;
+		-o-transition: .3s ease;
+
+		.profile-image {
+			width: 120px;
+			height: 120px;
+			border: 1px solid transparent;
+			border-radius: 65px;
+			overflow: hidden;
+			position: relative;
+			margin: -90px auto 0;
+
+			img {
+				width: 100%;
+				height: 100%;
+			}
+		}
+
+		.profile-name {
+			text-align: center;
+			font-weight: 500;
+			color: #000;
+			font-size: 25px;
+			margin-top: 15px;
+		}
+	}
+
+	&.active {
+		opacity: 1;
+		.profile-bg {
+			-webkit-animation: scaleDown .3s ease-out both;
+			animation: scaleDown .3s ease-out both;
+			opacity: 1;
+		}
+
+		.profile-content {
+			top: 60%;
+		}
+	}
+
+	&.hide {
+		display: none;
+	}
+}
+
+@-webkit-keyframes fadeOut {
+	from { opacity: 1; }
+	to { opacity: 0; }
+}
+@keyframes fadeOut {
+	from { opacity: 1; }
+	to { opacity: 0; }
+}
+
+@-webkit-keyframes scaleDown {
+	from { opacity: 0; -webkit-transform: scale(2); transform: scale(2); }
+	to { opacity: 1; -webkit-transform: scale(1); }
+}
+@keyframes scaleDown {
+	from { opacity: 0; -webkit-transform: scale(2); transform: scale(2); }
+	to { opacity: 1; -webkit-transform: scale(1); transform: scale(1); }
+}
+
 .activity {
 	width: 100%;
 	height: 100%;
