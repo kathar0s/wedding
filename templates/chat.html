@@ -33,7 +33,7 @@
 				</div>
 				{% endifchanged %}
 				<div class="message-row {{ chatlog.type }}
-				{% ifchanged chatlog.user.id and chatlog.created_at|date:"Y-m-d H:i:s" %}
+				{% ifchanged chatlog.user.id and chatlog.created_at|date:"Y-m-d H:i" %}
 					seperate
 				{% endifchanged %}">
 					{% if chatlog.type == 'other' %}
@@ -42,7 +42,9 @@
 					</div>
 					{% endif %}
 					<div class='message-box'>
+						{% if chatlog.created_at|date:"a g:i" != next_log.created_at|date:"a g:i" %}
 						<div class='name'>{{ chatlog.user.name }}</div>
+						{% endif %}
 						<div class='message' data-timestamp="{% widthratio chatlog.created_at|date:"U" 1 1000 %}">
 							<span class="text">
 								{% if chatlog.type == 'me' %}
