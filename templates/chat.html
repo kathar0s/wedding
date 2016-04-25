@@ -377,35 +377,39 @@
 		});
 
 		$('.plus-area .btn-chat-gift').on('click', function(e){
-			alert('준비중입니다');
+			getAutoMessage('wishlist');
 		});
 
 		$('.plus-area .btn-chat-money').on('click', function(e){
-			$('#message').trigger('focus');
-			$.post(
-				'{% url "card:chat_bot" %}',
-				{
-			        'rcode': 'money',
-			        'chatroom': '{{ chatroom.id }}',
-			        'csrfmiddlewaretoken': '{{ csrf_token }}'
-		        },
-				function(data) {
-					if (!data.error) {
-						var messages = data.response.messages;
-
-						for (var idx in messages) {
-							(function(i) {
-								setTimeout(function(){
-									showMessage('other', messages[i].message, messages[i].name, messages[i].profile);
-								}, 1000 * i);
-							})(idx);
-						}
-					} else {
-						showMessage('other', data.response.message, data.response.name, data.response.profile);
-					}
-				}
-			);
+			getAutoMessage('money');
 		});
+	}
+
+	function getAutoMessage(rcode) {
+		$('#message').trigger('focus');
+		$.post(
+			'{% url "card:chat_bot" %}',
+			{
+		        'rcode': rcode,
+		        'chatroom': '{{ chatroom.id }}',
+		        'csrfmiddlewaretoken': '{{ csrf_token }}'
+	        },
+			function(data) {
+				if (!data.error) {
+					var messages = data.response.messages;
+
+					for (var idx in messages) {
+						(function(i) {
+							setTimeout(function(){
+								showMessage('other', messages[i].message, messages[i].name, messages[i].profile);
+							}, 1000 * i);
+						})(idx);
+					}
+				} else {
+					showMessage('other', data.response.message, data.response.name, data.response.profile);
+				}
+			}
+		);
 	}
 
 	function adjustChatBox() {
