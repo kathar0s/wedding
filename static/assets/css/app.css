@@ -27,6 +27,34 @@ u {
   border-color: inherit;
   margin-bottom: -1px;
 }
+.btn-chat {
+  display: inline-block;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-image: url('/s/assets/img/btn-chat.png');
+}
+.btn-chat.btn-chat-money {
+  width: 75px;
+  height: 75px;
+  background-position: -2px -2px;
+}
+.btn-chat.btn-chat-money:hover,
+.btn-chat.btn-chat-money:active {
+  width: 75px;
+  height: 75px;
+  background-position: -79px -2px;
+}
+.btn-chat.btn-chat-gift {
+  width: 75px;
+  height: 75px;
+  background-position: -156px -2px;
+}
+.btn-chat.btn-chat-gift:hover,
+.btn-chat.btn-chat-gift:active {
+  width: 75px;
+  height: 75px;
+  background-position: -233px -2px;
+}
 main {
   width: 100%;
   height: 100%;
@@ -743,15 +771,9 @@ form label.error {
 }
 .chat-activity .footer .plus-area .item {
   display: inline-block;
-}
-.chat-activity .footer .plus-area .btn-gift {
-  width: 75px;
-  height: 75px;
-  background: url('/s/assets/img/btn_chat_gift_n.png') no-repeat;
-  display: inline-block;
-}
-.chat-activity .footer .plus-area .btn-gift:hover {
-  background-image: url('/s/assets/img/btn_chat_gift_p.png');
+  margin-right: 20px;
+  text-align: center;
+  cursor: pointer;
 }
 .splash-wrapper {
   position: absolute;

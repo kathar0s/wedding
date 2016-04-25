@@ -141,11 +141,29 @@ def chat_bot(request):
                 'messages': messages
             }
         else:
-            data['response'] = {
-                'message': u'잘못된 코드를 입력하셨습니다.',
-                'name': u'형정석',
-                'profile': u'hjs.png'
-            }
+            default_messages = DefaultMessages.objects.filter(target=post['rcode']).order_by('created_at')
+
+            if len(default_messages) > 0:
+                messages = []
+                for default_message in default_messages:
+                    messages.append({'message': default_message.message, 'name': default_message.user.name,
+                                     'profile': default_message.user.profile})
+
+                    chatlog = ChatLogs(user=default_message.user, message=default_message.message)
+                    chatlog.chatroom_id = post['chatroom']
+                    chatlog.type = 'other'
+                    chatlog.save()
+
+                data['error'] = False
+                data['code'] = 200
+                data['message'] = u'자동 메세지 전송 완료'
+                data['response'] = {'messages': messages}
+            else:
+                data['response'] = {
+                    'message': u'잘못된 코드를 입력하셨습니다.',
+                    'name': u'형정석',
+                    'profile': u'hjs.png'
+                }
 
         return JsonResponse(data)
 
