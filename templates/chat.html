@@ -155,7 +155,7 @@
 				<hr class="divider"/>
 				<div class="content">
 					<ul class="list-unstyled members" id="chat-members">
-						<li class="media article" href="#">
+						<li class="media article" href="#" data-contact="010-9888-9911">
 							<div class="media-left">
 								<div class="profile">
 									<img src="{% static "assets/img/profile/hej.png" %}">
@@ -165,7 +165,7 @@
 								<div class="name">신부: 한의주</div>
 							</div>
 						</li>
-						<li class="media article" href="#">
+						<li class="media article" href="#" data-contact="010-9214-2857">
 							<div class="media-left">
 								<div class="profile">
 									<img src="{% static "assets/img/profile/hjs.png" %}">
@@ -209,6 +209,9 @@
 				<img src="{% static "assets/img/profile/hjs.png" %}">
 			</div>
 			<div class="profile-name"></div>
+			<div class="profile-contact">
+				<a href="#" class="value no-decoration"></a>
+			</div>
 		</div>
 	</div>
 {% endblock %}
@@ -297,9 +300,12 @@
 
 			var image = $(this).find('img').prop('src');
 			var name = $(this).find('.name').text();
+			var contact = $(this).data('contact');
+
 			$('#profile').removeClass('hide').addClass('active');
 			$('#profile .profile-image img').prop('src', image);
 			$('#profile .profile-name').text(name);
+			$('#profile .profile-contact .value').prop('href', 'tel:'+contact).text(contact);
 		});
 
 		$('.profile-close').on('click', function(e){

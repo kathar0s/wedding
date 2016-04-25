@@ -35,6 +35,14 @@ u {
 	margin-bottom: -1px;
 }
 
+a.no-decoration {
+	text-decoration: none !important;
+	&:focus,
+	&:hover {
+		text-decoration: none !important;
+	}
+}
+
 .btn-chat {
 	display:inline-block;
 	overflow:hidden;
@@ -276,7 +284,6 @@ form {
 					font-size: 0.9rem;
 					padding: 0.6rem 0
 				}
-
 			}
 		}
 	}
@@ -398,6 +405,17 @@ form {
 			color: #000;
 			font-size: 25px;
 			margin-top: 15px;
+		}
+
+		.profile-contact {
+			text-align: center;
+			margin-top: 15px;
+			.value {
+				color: #bababa;
+				border: 1px solid #f2f2f2;
+				padding: 5px;
+				border-radius: 4px;
+			}
 		}
 	}
 

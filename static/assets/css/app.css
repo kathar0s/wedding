@@ -27,6 +27,13 @@ u {
   border-color: inherit;
   margin-bottom: -1px;
 }
+a.no-decoration {
+  text-decoration: none !important;
+}
+a.no-decoration:focus,
+a.no-decoration:hover {
+  text-decoration: none !important;
+}
 .btn-chat {
   display: inline-block;
   overflow: hidden;
@@ -341,6 +348,16 @@ form label.error {
   color: #000;
   font-size: 25px;
   margin-top: 15px;
+}
+.profile-wrapper .profile-content .profile-contact {
+  text-align: center;
+  margin-top: 15px;
+}
+.profile-wrapper .profile-content .profile-contact .value {
+  color: #bababa;
+  border: 1px solid #f2f2f2;
+  padding: 5px;
+  border-radius: 4px;
 }
 .profile-wrapper.active {
   opacity: 1;
