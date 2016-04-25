@@ -151,7 +151,7 @@
 				<hr class="divider"/>
 				<div class="content">
 					<ul class="list-unstyled members" id="chat-members">
-						<li class="media article">
+						<li class="media article" href="#">
 							<div class="media-left">
 								<div class="profile">
 									<img src="{% static "assets/img/profile/hej.png" %}">
@@ -161,7 +161,7 @@
 								<div class="name">신부: 한의주</div>
 							</div>
 						</li>
-						<li class="media article">
+						<li class="media article" href="#">
 							<div class="media-left">
 								<div class="profile">
 									<img src="{% static "assets/img/profile/hjs.png" %}">
@@ -287,6 +287,8 @@
 		});
 
 		$('#chat-members li').on('click', function(e){
+			e.preventDefault();
+			e.stopPropagation();
 			history.pushState('', "profile", "#profile");
 
 			var image = $(this).find('img').prop('src');

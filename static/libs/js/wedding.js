@@ -16,7 +16,7 @@ $(document).ready(function(e){
             if ($(this).data('method') == 'replace') {
                 location.replace(href);
             } else {
-                location.href = href;
+                if (href != '#') location.href = href;
             }
         }
 
