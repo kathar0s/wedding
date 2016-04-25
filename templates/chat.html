@@ -386,7 +386,7 @@
 	}
 
 	function getAutoMessage(rcode) {
-		$('#message').trigger('focus');
+		$('.talk-box').trigger('click');
 		$.post(
 			'{% url "card:chat_bot" %}',
 			{
