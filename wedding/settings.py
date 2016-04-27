@@ -27,7 +27,7 @@ SECRET_KEY = 'p(mwy7ab9jeh0pzw+m-cz^!g_1t3=e4ic%9ptqo$h4b5tpjvxv'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['20140848.me', 'www.20140848.me']
 
 # Application definition
 PROJECT_APPS = [
