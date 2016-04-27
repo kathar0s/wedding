@@ -14,6 +14,12 @@ from django.utils import timezone
 from models import User, ChatRooms, ChatLogs, DefaultMessages, Gallery, Article
 
 
+def event(request):
+    template_data = {'message': 'hello',}
+
+    return render(request, 'event.html', template_data)
+
+
 def index(request):
 
     template_data = {

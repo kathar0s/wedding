@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 PROJECT_APPS = [
     'card',
-    'card.core',
+    'card.core'
 ]
 
 THIRTPARTY_APPS = [
