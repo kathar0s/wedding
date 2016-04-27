@@ -111,16 +111,6 @@ def register_default_messages():
         u'Selalu menjaga kesehatanmu! tetap terhubungya!',
     ]
 
-    message_list[u'이재석7137'] = [
-        u'미선이 누나',
-        u'요즘 잘 지내고 계셔요?',
-        u'벌써 아이도 2명이나 되시고 ㅎㅎ',
-        u'어머니 고수가 다 되셨겠네요 ^^;;',
-        u'멀리서 가족끼리 한다고 초대는 못했지만',
-        u'나중에 한번 얼굴 찾아뵈러 갈께요!',
-        u'Selalu menjaga kesehatanmu! tetap terhubungya!',
-    ]
-
     message_list[u'이미선6599'] = [
         u'미선이 누나',
         u'요즘 잘 지내고 계셔요?',

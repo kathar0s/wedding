@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block body %}
+이벤트 페이지로 연결합니다.
+{% endblock %}
+{% block javascript %}
+<script>
+	$(document).ready(function(){
+		location.href = 'https://open.kakao.com/o/s82FCnj';
+	});
+</script>
+{% endblock %}
