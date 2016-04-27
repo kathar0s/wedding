@@ -24,7 +24,7 @@ from card import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^card/', include('card.urls', namespace='card')),
-    url(r'^event/', views.event, 'event'),
+    url(r'^event/', views.event),
     url(r'^$', RedirectView.as_view(url='card/', permanent=False))
 ]
 
